@@ -85,6 +85,9 @@ body.running #nav{display:none}
 .big{font-size:1.55rem;font-weight:800;line-height:1.3;min-height:6.2em;display:flex;align-items:center;justify-content:center;padding:0 6px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:112px;background:linear-gradient(135deg,#F3FA3C,#5EEAD4);color:#06202E;padding:10px 16px;border-radius:14px;font-weight:800;z-index:9;box-shadow:0 8px 24px rgba(0,0,0,.4)}
 svg text{fill:var(--mut);font-size:10px}
+.rung[data-rid]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.rung.drag{position:relative;z-index:30;transform-origin:center;box-shadow:0 14px 34px rgba(0,0,0,.55),0 0 0 2px var(--acc);opacity:.96;transition:none}
+body.dragging{overscroll-behavior:contain}
 </style>
 </head>
 <body>
@@ -269,17 +272,17 @@ view.scala = function () {
       <a class="btn sec" href="#/test">Provata in partita</a></div>
       ${rd ? '<p class="mut" style="margin-top:8px">Gli ultimi 2 esercizi sono andati bene (picco 3 o meno, fine 2 o meno). Se in partita ti senti tranquillo, segnala come superata.</p>' : '<p class="mut" style="margin-top:8px">Si considera pronta dopo 2 esercizi di fila con picco 3 o meno e agitazione finale 2 o meno.</p>'}</div>`;
   } else h += '<div class="card"><b>Scala completata 🎉</b><p class="mut">Hai superato tutte le situazioni. Aggiungine di nuove quando vuoi.</p></div>';
-  h += '<div class="row spread"><h2 style="margin:18px 0 4px">La mia scala</h2><a class="btn small sec" href="#/scelta">+ Situazioni</a></div><p class="mut" style="margin:0 0 6px">1 è la più difficile, ' + (n || 10) + ' la più morbida. Tocca il numero per scegliere la posizione, oppure usa le frecce.</p>';
+  h += '<div class="row spread"><h2 style="margin:18px 0 4px">La mia scala</h2><a class="btn small sec" href="#/scelta">+ Situazioni</a></div><p class="mut" style="margin:0 0 6px">1 è la più difficile, ' + (n || 10) + ' la più morbida. Tieni premuta una riga e trascinala su o giù. Oppure tocca il numero, o usa le frecce.</p>';
   S.order.forEach((id, i) => {
     const x = byId(id), c = colorAt(i, n), isW = w && w.id === id;
-    h += `<div class="rung ${isW ? 'work' : ''}" style="--c:${c}"><button class="n" data-act="pos" data-id="${id}" aria-label="Cambia posizione" style="border:0;background:none;font:inherit;cursor:pointer;padding:0">${i + 1}</button><div class="t">${esc(x.t)}${isW ? '<div class="badge" style="margin-top:4px;background:rgba(232,240,58,.2);color:#E8F03A">Lavoro qui</div>' : ''}</div>
+    h += `<div class="rung ${isW ? 'work' : ''}" data-rid="${id}" style="--c:${c}"><button class="n" data-act="pos" data-id="${id}" aria-label="Cambia posizione" style="border:0;background:none;font:inherit;cursor:pointer;padding:0">${i + 1}</button><div class="t">${esc(x.t)}${isW ? '<div class="badge" style="margin-top:4px;background:rgba(232,240,58,.2);color:#E8F03A">Lavoro qui</div>' : ''}</div>
       ${isW ? '' : `<button class="btn small sec" data-act="focus" data-id="${id}">Lavora qui</button>`}
       <div class="mv"><button data-act="up" data-id="${id}" aria-label="Su">▲</button><button data-act="dn" data-id="${id}" aria-label="Giù">▼</button></div></div>`;
   });
   if (dn.length) {
     h += '<h2>Superate</h2>' + dn.map(x => `<div class="rung done"><div class="n">✓</div><div class="t">${esc(x.t)}<div class="mut" style="font-size:.85rem">Superata il ${fdate(x.sup)}</div></div><button class="btn small ghost" data-act="undo" data-id="${x.id}">Riapri</button></div>`).join('');
   }
-  set(h);
+  set(h); initDrag();
 };
 
 function pathCard() {
@@ -306,6 +309,57 @@ view.guida = function () {
   <div class="card"><b>Dove vedi i progressi</b><p class="mut">In <b>Storico</b> trovi i grafici e puoi esportare tutto. In <b>Altro</b> fai il backup e imposti il promemoria giornaliero.</p></div>
   <a class="btn block" href="#/scala">Ho capito, inizio</a>`);
 };
+
+// ---------- Trascinamento gradini (tieni premuto) ----------
+let dragOn = false;
+app.addEventListener('touchmove', e => { if (dragOn && e.cancelable) e.preventDefault(); }, { passive: false });
+function initDrag() {
+  document.querySelectorAll('.rung[data-rid]').forEach(el => {
+    let swallow = 0, timer = null, sx = 0, sy = 0, pid = null, grabY = 0, list = null, raf = 0, py = 0;
+    const cleanup = () => { clearTimeout(timer); timer = null; cancelAnimationFrame(raf); };
+    const place = () => {
+      el.style.transform = ''; const r = el.getBoundingClientRect();
+      el.style.transform = 'translateY(' + (py - grabY - r.top) + 'px) scale(1.02)';
+    };
+    const step = () => {
+      if (!dragOn) return;
+      const H = window.innerHeight; if (py < 90) window.scrollBy(0, -12); else if (py > H - 130) window.scrollBy(0, 12);
+      const sibs = Array.from(list.querySelectorAll('.rung[data-rid]')).filter(x => x !== el);
+      let before = null;
+      for (const x of sibs) { const r = x.getBoundingClientRect(); if (py < r.top + r.height / 2) { before = x; break; } }
+      const cur = el.nextElementSibling, want = before;
+      if (want ? cur !== want : (cur && cur.matches('.rung[data-rid]'))) { if (want) want.parentNode.insertBefore(el, want); else { const last = sibs[sibs.length - 1]; if (last) last.after(el); } }
+      place(); raf = requestAnimationFrame(step);
+    };
+    const start = () => {
+      dragOn = true; document.body.classList.add('dragging'); el.classList.add('drag'); list = el.parentNode;
+      const r = el.getBoundingClientRect(); grabY = sy - r.top; py = sy;
+      try { el.setPointerCapture(pid); } catch (e) {}
+      if (navigator.vibrate) navigator.vibrate(18);
+      raf = requestAnimationFrame(step);
+    };
+    el.addEventListener('contextmenu', e => e.preventDefault());
+    el.addEventListener('pointerdown', e => {
+      if (e.button > 0 || e.target.closest('input')) return;
+      sx = e.clientX; sy = e.clientY; pid = e.pointerId; cleanup(); timer = setTimeout(start, 380);
+    });
+    el.addEventListener('pointermove', e => {
+      if (dragOn) { py = e.clientY; return; }
+      if (timer && (Math.abs(e.clientX - sx) > 9 || Math.abs(e.clientY - sy) > 9)) cleanup();
+    });
+    const end = () => {
+      cleanup();
+      if (!dragOn) return; swallow = Date.now() + 500; dragOn = false; document.body.classList.remove('dragging');
+      const ids = Array.from(list.querySelectorAll('.rung[data-rid]')).map(x => x.dataset.rid);
+      el.classList.remove('drag'); el.style.transform = '';
+      if (ids.length === S.order.length && ids.join() !== S.order.join()) { S.order = ids; save(); toast('Spostata in posizione ' + (ids.indexOf(el.dataset.rid) + 1)); }
+      route();
+    };
+    el.addEventListener('click', e => { if (Date.now() < swallow) { e.stopPropagation(); e.preventDefault(); } }, true);
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', () => { if (dragOn) end(); else cleanup(); });
+  });
+}
 view.scelta = function () {
   cleanOrder(); const n = S.order.length;
   let h = `<a href="#/scala" style="text-decoration:none">‹ Scala</a><h1>Scegli le situazioni</h1><p class="mut">Nella scala: <b>${n}</b> di ${MAXL}. Tocca per aggiungere. Poi ordinale nella schermata Scala.</p>
@@ -464,7 +518,7 @@ view.altro = function () {
   <p class="mut" style="margin-top:8px">Il backup si condivide anche su WhatsApp o Drive dal menu che si apre. Per ripristinare scegli il file qui sotto.</p><input type="file" id="imp" accept=".json,application/json"></div>
   <h2>Promemoria</h2><div class="card"><div class="row"><span>Ogni giorno alle</span><input type="time" id="remt" value="${esc(S.rem)}" style="width:auto"></div><div style="margin-top:8px"><button class="btn small" data-act="ics">Aggiungi al calendario</button></div></div>
   <h2>Importante</h2><div class="card"><p class="mut">Questa app è un allenamento mentale per lo sport, non una terapia. Se una situazione ti provoca ansia forte o disagio che va oltre lo sport, parlane con uno psicologo dello sport o con il medico.</p></div>
-  <p class="mut">Versione 4 · guida e percorso</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
+  <p class="mut">Versione 4b · trascina i gradini</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
 };
 
 // ---------- Esportazioni ----------
