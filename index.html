@@ -253,11 +253,12 @@ function render() { route(true); }
 const view = {};
 view.scala = function () {
   cleanOrder(); const n = S.order.length, w = working(), dn = doneList();
-  let h = '<h1>Scala della calma</h1><p class="mut">Un gradino alla volta: dal più morbido (in basso) al più difficile (in alto).</p>';
+  let h = '<h1>Scala della calma</h1><p class="mut">Un gradino alla volta: si parte dalla situazione più morbida (l’ultima) e si sale fino alla 1.</p>';
   if (!n && !dn.length) {
     h += '<div class="card"><h2 style="margin-top:0">Costruisci la tua scala</h2><p>Scegli da 5 a 10 situazioni che ti fanno perdere il controllo in partita. Poi le metti in ordine: 1 la più difficile, 10 la più abbordabile.</p><a class="btn" href="#/scelta">Scegli le situazioni</a></div>';
-    set(h); return;
+    h += pathCard(); set(h); return;
   }
+  h += pathCard();
   if (w) {
     const pos = S.order.indexOf(w.id) + 1, ss = sessionsOf(w.id), last = ss[ss.length - 1], rd = ready(w.id);
     h += `<div class="hero"><div class="row spread"><span class="badge">Posizione ${pos} di ${n}</span>${rd ? '<span class="badge ok">Pronta da superare</span>' : ''}</div>
@@ -279,6 +280,31 @@ view.scala = function () {
     h += '<h2>Superate</h2>' + dn.map(x => `<div class="rung done"><div class="n">✓</div><div class="t">${esc(x.t)}<div class="mut" style="font-size:.85rem">Superata il ${fdate(x.sup)}</div></div><button class="btn small ghost" data-act="undo" data-id="${x.id}">Riapri</button></div>`).join('');
   }
   set(h);
+};
+
+function pathCard() {
+  cleanOrder(); const n = S.order.length, g = gate();
+  const st = [
+    { ok: n >= 5, t: 'Riempi la scala', d: 'Scegli 5–10 situazioni che ti fanno perdere il controllo e mettile in ordine.', href: '#/scelta', b: 'Scegli le situazioni' },
+    { ok: g.ta === 4, t: 'Corso base: training autogeno', d: 'Impari a rilassare corpo e respiro. 4 livelli, circa 10 minuti al giorno.', href: '#/corso', b: 'Vai al corso' },
+    { ok: g.vi === 4, t: 'Corso base: visualizzazione', d: 'Impari a vedere la scena con nitidezza: colori, suoni, sensazioni.', href: '#/corso', b: 'Vai al corso' },
+    { ok: !!S.unlocked, t: 'Via libera', d: 'Autovalutazione almeno 60%, poi confermi e si sblocca la scala.', href: '#/corso', b: 'Vedi i requisiti' },
+    { ok: false, t: 'Lavora sulla scala', d: 'Dall’ultima alla prima: esercizio, prova in partita, poi segni “Superata”.', href: '#/sessione', b: 'Esercizio' }
+  ];
+  const cur = st.findIndex(x => !x.ok);
+  let h = '<div class="card"><div class="row spread"><b>Il tuo percorso</b><a class="btn small ghost" href="#/guida">Come si usa</a></div>';
+  st.forEach((x, i) => { h += `<div style="display:flex;gap:10px;margin-top:10px;opacity:${x.ok || i === cur ? 1 : .55}"><div style="width:22px">${x.ok ? '✅' : (i === cur ? '👉' : '⬜')}</div><div style="flex:1"><b>${i + 1}. ${x.t}</b>${i === cur ? `<div class="mut" style="margin:2px 0 6px">${x.d}</div><a class="btn small" href="${x.href}">${x.b}</a>` : ''}</div></div>`; });
+  return h + '</div>';
+}
+view.guida = function () {
+  set(`<a href="#/scala" style="text-decoration:none">‹ Scala</a><h1>Come si usa</h1>
+  <p>Questa app ti allena a restare calmo nelle situazioni di gara che ti mettono più in difficoltà. Si lavora a piccoli passi, senza fretta.</p>
+  <div class="card"><b>1. Riempi la scala</b><p class="mut">In <b>Scala</b> scegli da 5 a 10 situazioni che ti fanno perdere il controllo (un match point, un pubblico ostile, un avversario polemico…). Poi ordinale: toccando il numero scegli la posizione. <b>1</b> è la più difficile, l’ultima la più morbida. Puoi cambiare idea quando vuoi.</p></div>
+  <div class="card"><b>2. Prepara due abilità nel Corso base</b><p class="mut"><b>Training autogeno</b>: rilassi corpo e respiro con una voce guida. <b>Visualizzazione</b>: immagini la scena con colori, suoni e sensazioni. Ogni livello si supera con un po’ di pratica e i tuoi punteggi, non con il calendario. Meglio 10 minuti al giorno.</p></div>
+  <div class="card"><b>3. Via libera</b><p class="mut">Quando hai superato i livelli 1–4 di entrambi e l’autovalutazione settimanale arriva almeno al 60%, confermi e si sblocca la scala.</p></div>
+  <div class="card"><b>4. Lavora dall’ultima situazione alla prima</b><p class="mut">In <b>Esercizio</b> ti rilassi, entri nella scena, e se l’agitazione sale troppo esci con il pulsante e respiri. Poi rientri. Quando due esercizi di fila vanno bene, provi la situazione in partita (<b>Provata in partita</b>) e, se ti senti tranquillo, tocchi <b>Superata</b>. Passi alla successiva.</p></div>
+  <div class="card"><b>Dove vedi i progressi</b><p class="mut">In <b>Storico</b> trovi i grafici e puoi esportare tutto. In <b>Altro</b> fai il backup e imposti il promemoria giornaliero.</p></div>
+  <a class="btn block" href="#/scala">Ho capito, inizio</a>`);
 };
 view.scelta = function () {
   cleanOrder(); const n = S.order.length;
@@ -434,11 +460,11 @@ function chart(series) {
 }
 view.altro = function () {
   set(`<h1>Altro</h1>
-  <h2>Salva e condividi</h2><div class="card"><div class="row"><button class="btn small" data-act="exp">Backup (file)</button><button class="btn small sec" data-act="csv">Esporta CSV</button><button class="btn small sec" data-act="share">Condividi riepilogo</button><a class="btn small sec" data-act="wa" href="#" target="_blank" rel="noopener">WhatsApp</a></div>
+  <div class="row" style="margin:8px 0"><a class="btn small sec" href="#/guida">Come si usa</a></div><h2>Salva e condividi</h2><div class="card"><div class="row"><button class="btn small" data-act="exp">Backup (file)</button><button class="btn small sec" data-act="csv">Esporta CSV</button><button class="btn small sec" data-act="share">Condividi riepilogo</button><a class="btn small sec" data-act="wa" href="#" target="_blank" rel="noopener">WhatsApp</a></div>
   <p class="mut" style="margin-top:8px">Il backup si condivide anche su WhatsApp o Drive dal menu che si apre. Per ripristinare scegli il file qui sotto.</p><input type="file" id="imp" accept=".json,application/json"></div>
   <h2>Promemoria</h2><div class="card"><div class="row"><span>Ogni giorno alle</span><input type="time" id="remt" value="${esc(S.rem)}" style="width:auto"></div><div style="margin-top:8px"><button class="btn small" data-act="ics">Aggiungi al calendario</button></div></div>
   <h2>Importante</h2><div class="card"><p class="mut">Questa app è un allenamento mentale per lo sport, non una terapia. Se una situazione ti provoca ansia forte o disagio che va oltre lo sport, parlane con uno psicologo dello sport o con il medico.</p></div>
-  <p class="mut">Versione 3b · posizione con un tocco</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
+  <p class="mut">Versione 4 · guida e percorso</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
 };
 
 // ---------- Esportazioni ----------
@@ -477,7 +503,7 @@ function route(keep) {
   const name = (location.hash.replace(/^#\/?/, '') || 'scala').split('/')[0];
   if (!keep && ses && ses.view !== name) abort();
   if (!ses) document.body.classList.remove('running');
-  const tab = { scala: 'scala', scelta: 'scala', test: 'scala', training: 'corso', corso: 'corso', auto: 'corso', sessione: 'sessione', storico: 'storico', altro: 'altro' }[name] || 'scala';
+  const tab = { scala: 'scala', scelta: 'scala', test: 'scala', training: 'corso', corso: 'corso', auto: 'corso', sessione: 'sessione', storico: 'storico', altro: 'altro', guida: 'scala' }[name] || 'scala';
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.tab === tab));
   (view[name] || view.scala)();
 }
