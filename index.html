@@ -136,6 +136,7 @@ const LIB = [
 ].map((t, i) => ({ id: 'l' + i, t: t.replace('Partita partita male', 'Partita iniziata male') }));
 const DEF = { sit: [], order: [], focus: null, level: 1, sessions: [], tests: [], tas: [], vis: [], auto: [], unlocked: false, cstart: null, voice: true, pace: 10, rem: '21:00' };
 let S = load();
+try { if (S.pv !== 2) { S.pace = ({ 8: 10, 10: 13, 14: 17 })[S.pace] || 13; S.pv = 2; localStorage.setItem(KEY, JSON.stringify(S)); } } catch (e) {}
 function load() { try { const o = JSON.parse(localStorage.getItem(KEY)); if (o && typeof o === 'object') return Object.assign({}, DEF, o); } catch (e) {} return JSON.parse(JSON.stringify(DEF)); }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 const byId = id => S.sit.find(x => x.id === id);
@@ -160,20 +161,20 @@ function set(h) { app.innerHTML = h; const y = window._keepY; window._keepY = nu
 
 // ---------- Training autogeno ----------
 const TAG = [
-  { n: 'Pesantezza', d: 'Braccia e gambe pesanti', f: ['Il braccio destro è pesante.', 'Il braccio sinistro è pesante.', 'La gamba destra è pesante.', 'La gamba sinistra è pesante.', 'Tutto il corpo è pesante e rilassato.'] },
-  { n: 'Calore', d: 'Braccia e gambe calde', f: ['Il braccio destro è caldo.', 'Il braccio sinistro è caldo.', 'La gamba destra è calda.', 'La gamba sinistra è calda.', 'Tutto il corpo è caldo e rilassato.'] },
-  { n: 'Cuore', d: 'Battito calmo e regolare', f: ['Il cuore batte calmo e regolare.', 'Il battito è tranquillo.'] },
-  { n: 'Respiro', d: 'Respiro che si lascia respirare', f: ['Il respiro è calmo e regolare.', 'Respiro e mi lascio respirare.'] },
-  { n: 'Addome', d: 'Calore al centro del corpo', f: ['L\'addome è caldo.', 'Il calore si diffonde al centro del corpo.'] },
-  { n: 'Fronte', d: 'Fronte fresca, mente chiara', f: ['La fronte è fresca.', 'La mente è chiara e tranquilla.'] }
+  { n: 'Pesantezza', d: 'Braccia e gambe pesanti', f: ['Lascia che il braccio destro diventi pesante… sempre più pesante.', 'Il braccio sinistro è pesante… pesante e rilassato.', 'La gamba destra è pesante… lascia andare.', 'La gamba sinistra è pesante… morbida e pesante.', 'Tutto il corpo è pesante… e profondamente rilassato.'] },
+  { n: 'Calore', d: 'Braccia e gambe calde', f: ['Senti il braccio destro caldo… un calore piacevole.', 'Il braccio sinistro è caldo… sempre più caldo.', 'La gamba destra è calda… morbida e calda.', 'La gamba sinistra è calda… lascia andare.', 'Tutto il corpo è caldo… e profondamente rilassato.'] },
+  { n: 'Cuore', d: 'Battito calmo e regolare', f: ['Ascolta il cuore… batte calmo e regolare.', 'Il battito è tranquillo… lento e sereno.'] },
+  { n: 'Respiro', d: 'Respiro che si lascia respirare', f: ['Il respiro è calmo… e regolare.', 'Non devi fare niente… ti lasci respirare.'] },
+  { n: 'Addome', d: 'Calore al centro del corpo', f: ['L\'addome è caldo… morbido.', 'Il calore si diffonde piano… al centro del corpo.'] },
+  { n: 'Fronte', d: 'Fronte fresca, mente chiara', f: ['Senti la fronte fresca… distesa.', 'La mente è chiara… e tranquilla.'] }
 ];
 function buildTA(level) {
-  const p = S.pace || 10; const q = [{ t: 'Mettiti comodo. Chiudi gli occhi.', s: 8 }, { t: 'Sono calmo.', s: 8 }];
+  const p = S.pace || 10; const q = [{ t: 'Mettiti comodo… chiudi gli occhi… e respira con calma.', s: 12 }, { t: 'Sono calmo… completamente calmo.', s: 10 }];
   for (let g = 0; g < level; g++) { const reps = g === level - 1 ? 2 : 1; TAG[g].f.forEach(f => { for (let r = 0; r < reps; r++) q.push({ t: f, s: p }); }); }
-  q.push({ t: 'Sono calmo, centrato. Il mio respiro è regolare e profondo.', s: 10 });
+  q.push({ t: 'Sono calmo e centrato… il mio respiro è regolare… e profondo.', s: 14 });
   return q;
 }
-const RIPRESA = [{ t: 'Ora riprendo. Stringo i pugni.', s: 6 }, { t: 'Piego le braccia e respiro profondo.', s: 6 }, { t: 'Apro gli occhi.', s: 5 }];
+const RIPRESA = [{ t: 'Ora riprendo lentamente. Stringo i pugni.', s: 7 }, { t: 'Piego le braccia e respiro profondo.', s: 7 }, { t: 'Apro gli occhi.', s: 5 }];
 const LAYERS = {
   colori: 'Guarda i colori: il campo, le linee, la pallina, i vestiti.',
   suoni: 'Ascolta i suoni: la pallina, il pubblico, la tua voce.',
@@ -183,9 +184,9 @@ const LAYERS = {
 };
 const LAYER_N = { colori: 'Colori', suoni: 'Suoni', sapori: 'Sapori', respiro: 'Respiro', tensione: 'Tensione' };
 function visSteps(x, layers, secs) {
-  const q = [{ t: 'Immagina la scena: ' + x.t, s: 15 }];
-  let tot = 15; layers.forEach(l => { q.push({ t: LAYERS[l], s: 12 }); tot += 12; });
-  const rest = Math.max(0, secs - tot); if (rest > 0) q.push({ t: 'Resta nella scena. Respira regolare e profondo.', s: rest });
+  const q = [{ t: 'Chiudi gli occhi… e immagina: ' + x.t, s: 18 }];
+  let tot = 18; layers.forEach(l => { q.push({ t: LAYERS[l], s: 12 }); tot += 12; });
+  const rest = Math.max(0, secs - tot); if (rest > 0) q.push({ t: 'Resta nella scena… respira regolare e profondo.', s: rest });
   return q;
 }
 function backSteps(peak) {
@@ -209,24 +210,51 @@ function curV() { for (let l = 1; l <= 6; l++) if (!visPassed(l)) return l; retu
 const VDIMS = { nit: 'Nitidezza dell\'immagine', col: 'Colori', sui: 'Suoni', sap: 'Sapori e odori', cor: 'Sensazioni del corpo', con: 'Controllo: muovi e cambi l\'immagine', sta: 'Stabilità: non si dissolve', trd: '3D: profondità, giri la testa' };
 const VLEV = [
   { n: 'Figura semplice', d: 'Una pallina gialla ferma: colore, contorno, cuciture.', dims: ['nit', 'sta'], steps: [
-    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Davanti a te c\'è una pallina da tennis gialla, ferma, sospesa nell\'aria.', 14], ['Guarda il colore giallo. Guarda il contorno rotondo.', 14], ['Guarda le cuciture bianche e la peluria.', 14], ['Allontana la pallina, poi avvicinala. Tienila ferma e nitida.', 16], ['Lasciala dissolvere lentamente. Apri gli occhi.', 8]] },
+    ['Mettiti comodo… chiudi gli occhi… e respira con calma.', 12], ['Ora immagina: davanti a te c\'è una pallina da tennis. Gialla, ferma, sospesa nell\'aria.', 18], ['Guarda bene il suo colore… un giallo vivo. Segui il contorno rotondo.', 18], ['Avvicinati un poco… e vedi le cuciture bianche, la peluria morbida.', 18], ['Allontana piano la pallina… poi riportala vicino. Resta nitida, ferma.', 20], ['Lascia che si dissolva lentamente… e quando vuoi, apri gli occhi.', 12]] },
   { n: 'Figura in movimento', d: 'Pallina che rimbalza, racchetta in mano.', dims: ['nit', 'sta', 'con', 'cor'], steps: [
-    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Hai la racchetta in mano. Senti il peso e il manico.', 13], ['Una pallina rimbalza piano davanti a te: giù, su, giù, su.', 15], ['Segui il rimbalzo con gli occhi, al ritmo del respiro.', 15], ['Colpisci piano la pallina. Senti la mano e il polso.', 15], ['Ferma l\'immagine. Falla ripartire. Poi apri gli occhi.', 12]] },
+    ['Mettiti comodo… chiudi gli occhi… e respira con calma.', 12], ['Immagina di avere la racchetta in mano. Senti il peso… e la presa sul manico.', 17], ['Davanti a te una pallina rimbalza piano… giù… su… giù… su.', 18], ['Segui il rimbalzo con gli occhi, al ritmo del tuo respiro.', 18], ['Ora colpiscila dolcemente. Senti la mano… il polso… il suono.', 18], ['Ferma l\'immagine… falla ripartire… e quando vuoi, apri gli occhi.', 15]] },
   { n: 'Il campo vuoto', d: 'Colori e rumori di un campo senza nessuno.', dims: ['nit', 'col', 'sui', 'sta'], steps: [
-    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Sei sul campo vuoto. Guarda i colori della superficie e delle linee.', 14], ['Guarda la rete, il cielo, i bordi del campo.', 13], ['Ascolta il silenzio. Poi il rumore della pallina sul campo: toc.', 14], ['Ascolta il rumore delle scarpe sulla superficie.', 12], ['Ascolta lontano: il vento, qualche voce. Poi apri gli occhi.', 12]] },
+    ['Mettiti comodo… chiudi gli occhi… e respira con calma.', 12], ['Immagina di essere su un campo vuoto. Guarda i colori della superficie e delle linee.', 18], ['Guarda la rete… il cielo… i bordi del campo.', 16], ['Ascolta il silenzio… poi il rumore di una pallina sul campo… toc.', 17], ['Ascolta le tue scarpe sulla superficie… ogni passo.', 15], ['In lontananza, il vento… qualche voce. Poi, con calma, apri gli occhi.', 15]] },
   { n: 'Più sensi', d: 'Sapori, odori, temperatura e vento.', dims: ['nit', 'col', 'sui', 'sap', 'cor', 'sta'], steps: [
-    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Senti la temperatura dell\'aria sulla pelle e il vento leggero.', 13], ['Senti l\'odore del campo: terra, gomma, erba o cemento.', 13], ['Senti il sapore dell\'acqua fresca che bevi.', 12], ['Senti il sapore di sale sulle labbra.', 12], ['Ora tutto insieme: colori, suoni, odori, sapori.', 16], ['Apri lentamente gli occhi.', 5]] },
+    ['Mettiti comodo… chiudi gli occhi… e respira con calma.', 12], ['Immagina l\'aria sulla pelle… la temperatura… un vento leggero.', 16], ['Senti l\'odore del campo: terra, gomma, erba o cemento.', 16], ['Immagina il sapore dell\'acqua fresca mentre bevi.', 15], ['Senti un po\' di sale sulle labbra.', 14], ['Ora tutto insieme… colori… suoni… odori… sapori.', 20], ['Apri lentamente gli occhi.', 8]] },
   { n: 'In 3D', d: 'Ti muovi nel campo, giri la testa, ti vedi dall\'esterno.', dims: ['nit', 'con', 'cor', 'trd', 'sta'], steps: [
-    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Guarda il campo davanti a te. Gira lentamente la testa a sinistra.', 13], ['Gira dietro di te: vedi recinzioni, teli e persone.', 13], ['Ora ti vedi dall\'esterno mentre palleggi: piccolo, in 3D.', 14], ['Rientra nel tuo corpo. Vedi con i tuoi occhi, senti i piedi.', 13], ['Muoviti nel campo: ogni passo ha il suo rumore.', 13], ['Apri lentamente gli occhi.', 5]] },
+    ['Mettiti comodo… chiudi gli occhi… e respira con calma.', 12], ['Guarda il campo davanti a te. Gira lentamente la testa a sinistra… vedi com\'è profondo.', 17], ['Gira dietro di te: recinzioni, teli, persone.', 16], ['Ora immagina di vederti dall\'esterno mentre palleggi… piccolo… in 3D.', 18], ['Rientra nel tuo corpo. Guarda con i tuoi occhi… senti i piedi a terra.', 17], ['Muoviti nel campo… ogni passo ha il suo rumore.', 16], ['Apri lentamente gli occhi.', 8]] },
   { n: 'Scena realistica', d: 'Una partita normale, tranquilla, con tutti i sensi.', dims: ['nit', 'col', 'sui', 'sap', 'cor', 'con', 'sta', 'trd'], steps: [
-    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Sei in una partita normale, punteggio basso, avversario educato.', 14], ['Guarda l\'avversario: la maglia, la posizione, i movimenti.', 13], ['Ascolta il pubblico che applaude con calma.', 12], ['Servi o rispondi: senti ogni gesto, colpisci pulito.', 15], ['Il respiro è regolare e profondo. Tutto è nitido e in 3D.', 14], ['Chiudi la scena con un respiro. Apri gli occhi.', 8]] }
+    ['Mettiti comodo… chiudi gli occhi… e respira con calma.', 12], ['Immagina una partita normale. Punteggio basso, avversario educato.', 18], ['Guarda il tuo avversario… la maglia… la posizione… i movimenti.', 16], ['Ascolta il pubblico… applausi tranquilli.', 14], ['Servi, o rispondi… senti ogni gesto… colpisci pulito.', 18], ['Il respiro è regolare e profondo… tutto è nitido… e tridimensionale.', 18], ['Chiudi la scena con un bel respiro… e apri gli occhi.', 10]] }
 ];
 const AUTO_Q = ['Sento le braccia pesanti entro 2 minuti.', 'Sento calore alle mani.', 'Il respiro diventa regolare senza sforzo.', 'Il battito rallenta quando lo voglio.', 'Resto rilassato senza addormentarmi né distrarmi.', 'Mi calmo in meno di 2 minuti anche fuori casa.', 'Rilassa spalle e mani durante la giornata.', 'Dopo l\'esercizio mi sento più sciolto di prima.'];
 const PLAN = [['1', 'Livello 1 Pesantezza', 'Livello 1 Figura semplice'], ['2', 'Livello 2 Calore', 'Livello 2 In movimento'], ['3', 'Livello 3 Cuore', 'Livello 3 Campo vuoto'], ['4', 'Livello 4 Respiro', 'Livello 4 Più sensi · via libera'], ['5', 'Livello 5 Addome', 'Livello 5 In 3D'], ['6', 'Livello 6 Fronte', 'Livello 6 Scena realistica']];
 
 // ---------- Motore sessione ----------
 let ses = null, tickId = null, wl = null;
-function speak(t) { if (!S.voice || !('speechSynthesis' in window)) return; try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'it-IT'; u.rate = 0.85; speechSynthesis.speak(u); } catch (e) {} }
+let spk = 0;
+function stopSpeak() { spk++; try { speechSynthesis.cancel(); } catch (e) {} }
+function pickVoice() {
+  try {
+    const vs = speechSynthesis.getVoices().filter(v => /^it/i.test(v.lang)); if (!vs.length) return null;
+    if (S.vname) { const m = vs.find(v => v.name === S.vname); if (m) return m; }
+    const sc = v => (/natural|neural|online|premium|enhanced|wavenet/i.test(v.name) ? 4 : 0) + (/elsa|alice|federica|paola|isabella|google/i.test(v.name) ? 2 : 0) + (v.localService ? 0 : 1);
+    return vs.slice().sort((a, b) => sc(b) - sc(a))[0];
+  } catch (e) { return null; }
+}
+function speak(t) {
+  if (!S.voice || !('speechSynthesis' in window)) return;
+  try {
+    stopSpeak(); const id = spk, vis = !!(ses && (ses.mode === 'vex' || ses.phase === 'vis'));
+    const rate = vis ? 0.76 : 0.68, pitch = vis ? 0.95 : 0.88, gap = vis ? 700 : 950;
+    const parts = t.split(/(?<=[.!?…])\s+/).filter(Boolean);
+    const next = i => {
+      if (id !== spk || i >= parts.length || !S.voice) return;
+      const u = new SpeechSynthesisUtterance(parts[i]); u.lang = 'it-IT'; u.rate = rate; u.pitch = pitch; u.volume = 0.95;
+      const v = pickVoice(); if (v) u.voice = v;
+      let called = false; const go = () => { if (called) return; called = true; setTimeout(() => next(i + 1), gap); };
+      u.onend = go; u.onerror = go; setTimeout(go, Math.max(2800, parts[i].length * 120 / rate));
+      speechSynthesis.speak(u);
+    };
+    next(0);
+  } catch (e) {}
+}
+try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => {}; } catch (e) {}
 async function wakeOn() { try { if (navigator.wakeLock) wl = await navigator.wakeLock.request('screen'); } catch (e) {} }
 function wakeOff() { try { if (wl) wl.release(); } catch (e) {} wl = null; }
 function startTick() { stopTick(); tickId = setInterval(tick, 200); }
@@ -249,7 +277,7 @@ function tick() {
   const p = $('#rp'); if (p) p.style.width = Math.min(100, 100 * el / ses.total) + '%';
   const s = $('#rs'); if (s) s.textContent = Math.ceil((ses.total - el) / 1000) + ' s alla fine di questa fase';
 }
-function abort() { stopTick(); try { speechSynthesis.cancel(); } catch (e) {} wakeOff(); ses = null; document.body.classList.remove('running'); }
+function abort() { stopTick(); stopSpeak(); wakeOff(); ses = null; document.body.classList.remove('running'); }
 function render() { route(true); }
 
 // ---------- Viste ----------
@@ -402,7 +430,8 @@ view.corso = function () {
     <p class="mut">Il ritmo è tuo: si sale di livello quando i criteri sono rispettati, non quando passa la settimana. Meglio poco ogni giorno.</p></div>
     <h2>Training autogeno</h2>
     <div class="card"><div class="row spread"><span>Voce guida</span><button class="chip ${S.voice ? 'on' : ''}" data-act="voice">${S.voice ? 'Attiva' : 'Spenta'}</button></div>
-    <div class="row spread" style="margin-top:10px"><span>Ritmo</span><span class="row">${[[8, 'Veloce'], [10, 'Normale'], [14, 'Lento']].map(r => `<button class="chip ${S.pace === r[0] ? 'on' : ''}" data-act="pace" data-v="${r[0]}">${r[1]}</button>`).join('')}</span></div></div>`;
+    <div class="row spread" style="margin-top:10px"><span>Ritmo</span><span class="row">${[[10, 'Veloce'], [13, 'Normale'], [17, 'Lento']].map(r => `<button class="chip ${S.pace === r[0] ? 'on' : ''}" data-act="pace" data-v="${r[0]}">${r[1]}</button>`).join('')}</span></div>
+    <div class="row spread" style="margin-top:10px"><span>Voce</span><button class="chip" data-act="vcy">${esc(((() => { const v = pickVoice(); return v ? v.name : 'predefinita'; })()).slice(0, 22))} · cambia</button></div></div>`;
   TAG.forEach((gx, i) => {
     const l = i + 1, mins = Math.round(buildTA(l).reduce((a, x) => a + x.s, 0) / 60 + 0.4), ps = taPassed(l), ar = S.tas.filter(t => t.level === l);
     h += `<div class="card" style="${l === S.level ? 'border-color:var(--acc)' : ''}"><div class="row spread"><b>Livello ${l}: ${gx.n}</b>${ps ? '<span class="badge ok">Superato</span>' : l === S.level ? '<span class="badge">Il tuo livello</span>' : ''}</div>
@@ -518,7 +547,7 @@ view.altro = function () {
   <p class="mut" style="margin-top:8px">Il backup si condivide anche su WhatsApp o Drive dal menu che si apre. Per ripristinare scegli il file qui sotto.</p><input type="file" id="imp" accept=".json,application/json"></div>
   <h2>Promemoria</h2><div class="card"><div class="row"><span>Ogni giorno alle</span><input type="time" id="remt" value="${esc(S.rem)}" style="width:auto"></div><div style="margin-top:8px"><button class="btn small" data-act="ics">Aggiungi al calendario</button></div></div>
   <h2>Importante</h2><div class="card"><p class="mut">Questa app è un allenamento mentale per lo sport, non una terapia. Se una situazione ti provoca ansia forte o disagio che va oltre lo sport, parlane con uno psicologo dello sport o con il medico.</p></div>
-  <p class="mut">Versione 4c · trascina senza saltare</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
+  <p class="mut">Versione 5 · voce lenta e calda</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
 };
 
 // ---------- Esportazioni ----------
@@ -579,6 +608,7 @@ app.addEventListener('click', e => {
   else if (a === 'tr') { window._t.r = +v; document.querySelectorAll('[data-act=tr]').forEach(x => x.classList.toggle('on', x === b)); }
   else if (a === 'tsave') { const w = working(); if (window._t.c == null) { toast('Scegli quanto sei rimasto calmo'); return; } S.tests.push({ ts: Date.now(), sit: w.id, calma: window._t.c, resp: window._t.r === 1, note: ($('#tnote') || {}).value || '' }); save(); toast('Salvato'); location.hash = '#/scala'; }
   else if (a === 'voice') { S.voice = !S.voice; save(); route(); }
+  else if (a === 'vcy') { try { const vs = speechSynthesis.getVoices().filter(v => /^it/i.test(v.lang)); if (!vs.length) { toast('Nessuna voce italiana trovata'); } else { const cur = pickVoice(), k = (vs.findIndex(v => cur && v.name === cur.name) + 1) % vs.length; S.vname = vs[k].name; save(); const y = window.scrollY; window._keepY = y; route(); const old = S.voice; S.voice = true; speak('Questa è la nuova voce. Respira con calma… e lasciati andare.'); S.voice = old; } } catch (e) {} }
   else if (a === 'pace') { S.pace = +v; save(); route(); }
   else if (a === 'lvl') { S.level = +v; save(); toast('Livello ' + v); route(); }
   else if (a === 'ta') { abort(); ses = { mode: 'ta', view: 'corso', level: +v, phase: 'ta', t0: Date.now() }; if (!S.cstart) S.cstart = Date.now(); wakeOn(); startTimed(buildTA(+v).concat(RIPRESA), () => { ses.phase = 'tarate'; render(); }); }
@@ -597,13 +627,13 @@ app.addEventListener('click', e => {
   else if (a === 'pre') { ses.pre = +v; ses.phase = 'ta'; startTimed(buildTA(ses.level), () => { ses.phase = 'check'; render(); }); }
   else if (a === 'gov') { ses.phase = 'vis'; startTimed(visSteps(byId(ses.sit), ses.layers, ses.vis), () => { ses.exit = false; ses.phase = 'vrate'; render(); }); }
   else if (a === 'breath') { ses.phase = 'breath'; startTimed(BREATH, () => { ses.phase = 'check'; render(); }); }
-  else if (a === 'exit') { stopTick(); ses.q = null; ses.exit = true; ses.phase = 'vrate'; try { speechSynthesis.cancel(); } catch (e) {} render(); }
+  else if (a === 'exit') { stopTick(); ses.q = null; ses.exit = true; ses.phase = 'vrate'; stopSpeak(); render(); }
   else if (a === 'vr') { ses.cd.push({ peak: +v, exit: !!ses.exit }); ses.phase = 'back'; startTimed(backSteps(+v), () => { ses.cyc++; if (ses.cyc >= ses.cycles) ses.phase = 'end'; else ses.phase = 'check'; render(); }); }
   else if (a === 'post') { ses.post = +v; ses.phase = 'endnote'; render(); }
   else if (a === 'esave') { const r = { ts: Date.now(), sit: ses.sit, level: ses.level, pre: ses.pre, cycles: ses.cd, post: ses.post, resp: !!($('#e1') || {}).checked, note: ($('#enote') || {}).value || '', secs: (Date.now() - ses.t0) / 1000 }; S.sessions.push(r); save(); stopTick(); wakeOff(); ses.phase = 'result'; render(); }
   else if (a === 'supfin') { const x = byId(ses.sit); if (x) { x.st = 'done'; x.sup = Date.now(); S.focus = null; cleanOrder(); save(); } abort(); location.hash = '#/scala'; route(); }
   else if (a === 'fin') { abort(); }
-  else if (a === 'pause') { if (!ses.paused) { ses.paused = true; ses.left = ses.tEnd - Date.now(); try { speechSynthesis.cancel(); } catch (e) {} } else { ses.paused = false; ses.tEnd = Date.now() + ses.left; } b.textContent = ses.paused ? 'Riprendi' : 'Pausa'; }
+  else if (a === 'pause') { if (!ses.paused) { ses.paused = true; ses.left = ses.tEnd - Date.now(); stopSpeak(); } else { ses.paused = false; ses.tEnd = Date.now() + ses.left; } b.textContent = ses.paused ? 'Riprendi' : 'Pausa'; }
   else if (a === 'skip') { ses.tEnd = Date.now(); tick(); }
   else if (a === 'stop') { if (confirm('Chiudere l\'esercizio? Non viene salvato.')) { abort(); route(); } }
   else if (a === 'exp') dl('scala-calma-backup-' + dk() + '.json', 'application/json', JSON.stringify(S));
