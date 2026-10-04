@@ -156,7 +156,7 @@ function ready(id) {
   return ss.every(s => Math.max.apply(null, s.cycles.map(c => c.peak)) <= 3 && s.post <= 2);
 }
 function toast(m) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
-function set(h) { app.innerHTML = h; window.scrollTo(0, 0); }
+function set(h) { app.innerHTML = h; const y = window._keepY; window._keepY = null; window.scrollTo(0, y == null ? 0 : y); }
 
 // ---------- Training autogeno ----------
 const TAG = [
@@ -353,7 +353,7 @@ function initDrag() {
       const ids = Array.from(list.querySelectorAll('.rung[data-rid]')).map(x => x.dataset.rid);
       el.classList.remove('drag'); el.style.transform = '';
       if (ids.length === S.order.length && ids.join() !== S.order.join()) { S.order = ids; save(); toast('Spostata in posizione ' + (ids.indexOf(el.dataset.rid) + 1)); }
-      route();
+      window._keepY = window.scrollY; route();
     };
     el.addEventListener('click', e => { if (Date.now() < swallow) { e.stopPropagation(); e.preventDefault(); } }, true);
     el.addEventListener('pointerup', end);
@@ -518,7 +518,7 @@ view.altro = function () {
   <p class="mut" style="margin-top:8px">Il backup si condivide anche su WhatsApp o Drive dal menu che si apre. Per ripristinare scegli il file qui sotto.</p><input type="file" id="imp" accept=".json,application/json"></div>
   <h2>Promemoria</h2><div class="card"><div class="row"><span>Ogni giorno alle</span><input type="time" id="remt" value="${esc(S.rem)}" style="width:auto"></div><div style="margin-top:8px"><button class="btn small" data-act="ics">Aggiungi al calendario</button></div></div>
   <h2>Importante</h2><div class="card"><p class="mut">Questa app è un allenamento mentale per lo sport, non una terapia. Se una situazione ti provoca ansia forte o disagio che va oltre lo sport, parlane con uno psicologo dello sport o con il medico.</p></div>
-  <p class="mut">Versione 4b · trascina i gradini</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
+  <p class="mut">Versione 4c · trascina senza saltare</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
 };
 
 // ---------- Esportazioni ----------
@@ -566,10 +566,10 @@ window.addEventListener('hashchange', () => route());
 // ---------- Eventi ----------
 app.addEventListener('click', e => {
   const b = e.target.closest('[data-act]'); if (!b) return; const a = b.dataset.act, id = b.dataset.id, v = b.dataset.v;
-  const mv = (id, d) => { const i = S.order.indexOf(id), j = i + d; if (i < 0 || j < 0 || j >= S.order.length) return; const t = S.order[i]; S.order[i] = S.order[j]; S.order[j] = t; save(); route(); };
-  if (a === 'pos') { const i = S.order.indexOf(id), n = S.order.length; const r = prompt('In che posizione la metti? Da 1 (la più difficile) a ' + n, String(i + 1)); const p = parseInt(r, 10); if (!isNaN(p) && p >= 1 && p <= n && p - 1 !== i) { S.order.splice(i, 1); S.order.splice(p - 1, 0, id); save(); route(); } }
+  const mv = (id, d) => { const i = S.order.indexOf(id), j = i + d; if (i < 0 || j < 0 || j >= S.order.length) return; const t = S.order[i]; S.order[i] = S.order[j]; S.order[j] = t; save(); window._keepY = window.scrollY; route(); };
+  if (a === 'pos') { const i = S.order.indexOf(id), n = S.order.length; const r = prompt('In che posizione la metti? Da 1 (la più difficile) a ' + n, String(i + 1)); const p = parseInt(r, 10); if (!isNaN(p) && p >= 1 && p <= n && p - 1 !== i) { S.order.splice(i, 1); S.order.splice(p - 1, 0, id); save(); window._keepY = window.scrollY; route(); } }
   else if (a === 'up') mv(id, -1); else if (a === 'dn') mv(id, 1);
-  else if (a === 'focus') { S.focus = id; save(); toast('Lavori su questa'); route(); }
+  else if (a === 'focus') { S.focus = id; save(); toast('Lavori su questa'); window._keepY = window.scrollY; route(); }
   else if (a === 'sup') { const w = working(); if (w && confirm('Segni questa situazione come superata?')) { w.st = 'done'; w.sup = Date.now(); S.focus = null; cleanOrder(); save(); toast('Superata! Passi alla successiva'); route(); } }
   else if (a === 'undo') { const x = byId(id); if (x) { if (S.order.length >= MAXL) { toast('La scala ha già 10 situazioni'); return; } x.st = 'on'; x.sup = null; S.order.push(x.id); save(); route(); } }
   else if (a === 'addl') { if (addSit(byId(id) ? byId(id).t : (LIB.find(l => l.id === id) || {}).t, id)) route(); }
