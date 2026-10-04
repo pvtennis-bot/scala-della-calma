@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scala della calma</title>
+<meta name="description" content="Desensibilizzazione passo dopo passo: lista delle situazioni, training autogeno, visualizzazione, storico.">
+<meta name="theme-color" content="#070F1E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Scala calma">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAMAAAAKE/YAAAABAlBMVEXq8/ro8Dpe6tT7kjz4cXE4vfgPSVMPSFMPSFIPR1IPR1EPRlEPRlAPRVAPRE8PQ08OQ04OQk4OQk0OQU0OQUwOQEwOP0sOPksOPkoOPUoNPUkNPEkNPEgNO0gNOkcNOUcNOUYNOEYNOEUNN0UMN0QMNkQMNUMMNEMMNEIMM0IMM0EMMkEMMkAMMUALMD8LLz8LLz4LLj4LLj0LLT0LLTwLLDwLKzsLKjsKKjoKKToKKTkKKDkKKDgKJzgKJjcKJTcKJTYKJDYJJDUJIzUJIzQJIjQJITMJIDMJIDIJHzIJHzEJHjEIHjAIHTAIHC8IGy8IGy4IGi4IGi0IGS0IGSwIGCxEY80VAAADNUlEQVR42u3W5W7cUBCG4fHaKbNTDBVDxUA5VEpS5vu/lapSlfUeqSt9Q+3I8/7fb55f3kM/A0aJTvQY9I+A0feAJdoN/S1g9DVgMdFfApZoN/TngNGngCXaDf0xYIlO9Dj0h4DR+4Al2g39LmD0NmAx0fuM6Hf78rg7xDylwObvEP+WUC3YoT0w6rbHT7JDu2Ajx3b5SXZIcKuRxVfz0Y08NvoNlqa5owYRTHTTqKoT/Td00+iqQcRrLCM0iHiFZYQGEYn2Qr/EMvp6gIgXWEZoEMFEK/8jgogdLKO3B4hgo1VfeX5o+JjWDm1jFce2uYl2aAurOLbFTbSTaDf0JlZxbJObaCfRiR734w2s4tgGN9EOPcfqXqpldadABBtdy3NH17WmGkQ8w1I1D9Ug4imWERpE8NB1rasGEU+wjNAgItFe6MdYRmgQ8QjL6OsBIvqEVv5HBBEPsYzeHiCCjVZ95fmh4WNaOzHR61jFsXVuoh1awyqOrXET7STaDb2KVRxb5SbaoRWs4tgKN9FOTPQDrO6lSlZ3CkSw0ZU8d3RVaapBxH0sVfNQDSLuYRmhQQQPXVW66j6g72IZoUFEov9vtPbXA0TcwTJCg4jbWEb/iCCCi9Z9e3ihVV95IGIZq3gHL3MT7dASVnFsiZtoJyZ6Eas4tshNtJNoN/QCVnFsgZtoh+aximPz3EQ7vUMPZAnQt7DUyKNsEMFFDwaaah/0YKCq7gP6Jpau+UANIm5gGaFBRKK90NexjNAg4hqW0dcDRIREX8Uy+kcEEVy07tvDC636ygMRc1jFO3iOm2iHZrGKY7PcRDuJdkPPYBXHZriJdhKd6HE/nsYqjk1zE+3QFFZxbIqbaEeCnpD1L9AT8tjoK1ia5o4aRFzGUjUP1SAiJPoSlq75QA0iEu2FvohlhAYRF7CM0CCCh9b+evQBfR7L6B8RRHDRum8PL7TqK88WPaKGf6y0Q5NgI8cm+Ul2qEXr3GolCXZIcK1tddStA/rPuVYed4fOBYzOBiwm+kzAEu2GPh0wOhWwRLuhTwYs0Ykehz4RMDoesES7oY8FjI4GLCb6SMAS7YY+HDA6FLBEe/ULQsNdNQCX7lgAAAAASUVORK5CYII=">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAA/FBMVEXq8/ro8Dpe6tT7kjz4cXE4vfgPSVMPSFMPSFIPR1IPR1EPRlEPRlAPRVAPRE8PQ08OQ04OQk4OQk0OQU0OQUwOQEwOP0sOPksOPkoOPUoNPUkNPEkNPEgNO0gNOkcNOUcNOUYNOEYNOEUNN0UMNkQMNUMMNEMMNEIMM0IMM0EMMkEMMkAMMUALMD8LLz8LLz4LLj4LLj0LLT0LLTwLLDwLKzsLKjsKKjoKKToKKTkKKDkKKDgKJzgKJjcKJTcKJTYKJDYJJDUJIzUJIzQJIjQJITMJIDMJIDIJHzIJHzEJHjEIHTAIHC8IGy8IGy4IGi4IGi0IGS0IGSwIGCzdDjLuAAADWklEQVR42u3W1XJbQRCE4RU4zLJCppApaAibQrbD+P7vkkpVSjrau+6ePVtTmv9eM/Pd6Gz647wUgACIgN/OS7+cF4DqgJ/O8w/44Tz/gO/OC0B1wDfnpa/OC0AAVMAX5wUgACrgs/MCUB3wyXn+AR+d5x9wTJb+dWyTMisJK40I2qyk7TQQiLPSEVFqdqSlzkqHRBNLD7XUWUndKQrkWSqgr1cT0LdJAnzAs76/ISCOEQD9vrkgAAig37cXEMe8xysIII55h1cQQBwTgNqAt3gF/4WIY97gFQQQxwiAAl9i4pgDvIJvIeIYCWD+Gm0fQC21nJX28bKl+0ryrLSHly3dU5JnBSAAKmAXL1u6qyTPCkAAVMAOXrZ0R0melV7jNTf29JrjiGMkQM+maoBez1pAHPMKz/z+sYA4xj3gJZ79/SMBcYx7wAu8ggDiGPeA53gFAcQxz/AK/gsRx0wzoMCXuGWA/VuIOOYpXsHXKHGMCKCWWs4KQHXANl62dFtJnpW28LKlW0ryrABUB2ziZUs3leRZ/gEbeNnSDSV5ln/AE7zmxo5ecxxxjATo2FQN0OlYC4hjHuOZ3z8WEMc8wisIII7hAZ2OvWAaAQ/xCgKIYwLgF1DiX4g45gFeQQBxzH28gl9i4hgFYP8Wahtg/holjlnHy97w60ryLP+ANbxs6ZqSPMs/YBUvW7qqJM8KQHXACl62dEVJnpWW8bKly0ryrAB4B3T1RMA9PNPzJwnEMQqg27UWtAvods0F0wi4i2d//0hAHBOA2oA7eAUBxDHuAbfxCv4LEce4B9zCK/glJo5RAPZvobYB5q9R4pglvOwNv6Qkz0qLeNnSRSV5VgACoAIW8LKlC0ryrAAEQAXM42VL55XkWWkOL1s6pyTPUgEzejUBMzZJgJt41vc3BMQxN/DM7x8LiGPcA67j2d8/EhDHBKA24BpeQQBxzFW8ggDiGB5Q4l8oABCgwJeYOGaIV/AtRBwjAcxfo+0DqKWWs5K8dTi0EzC/nyWaWDqrpc5KA6bGzoGaOCuJWwcDO8GgRcD/tQOblFnpivP8Ay47zz/gkvP8Ay46L11wXgACoALOOy8AAVAB55yXzjovANUBZ5znH3Daef4Bp5wXgOqAk85LJ5wXgNr9BQUmyXXCrD85AAAAAElFTkSuQmCC">
+<script>
+(function(){try{
+  var base=location.href.split('#')[0].split('?')[0];
+  var scope=base.replace(/[^\/]*$/,'');
+  var m={name:'Scala della calma',short_name:'Scala calma',description:'Desensibilizzazione passo dopo passo',lang:'it',id:base+'?app=scala',start_url:base+'?app=scala',scope:scope,display:'standalone',orientation:'portrait',background_color:'#0A1A2A',theme_color:'#0A1A2A',icons:[{src:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAA/FBMVEXq8/ro8Dpe6tT7kjz4cXE4vfgPSVMPSFMPSFIPR1IPR1EPRlEPRlAPRVAPRE8PQ08OQ04OQk4OQk0OQU0OQUwOQEwOP0sOPksOPkoOPUoNPUkNPEkNPEgNO0gNOkcNOUcNOUYNOEYNOEUNN0UMNkQMNUMMNEMMNEIMM0IMM0EMMkEMMkAMMUALMD8LLz8LLz4LLj4LLj0LLT0LLTwLLDwLKzsLKjsKKjoKKToKKTkKKDkKKDgKJzgKJjcKJTcKJTYKJDYJJDUJIzUJIzQJIjQJITMJIDMJIDIJHzIJHzEJHjEIHTAIHC8IGy8IGy4IGi4IGi0IGS0IGSwIGCzdDjLuAAADWklEQVR42u3W1XJbQRCE4RU4zLJCppApaAibQrbD+P7vkkpVSjrau+6ePVtTmv9eM/Pd6Gz647wUgACIgN/OS7+cF4DqgJ/O8w/44Tz/gO/OC0B1wDfnpa/OC0AAVMAX5wUgACrgs/MCUB3wyXn+AR+d5x9wTJb+dWyTMisJK40I2qyk7TQQiLPSEVFqdqSlzkqHRBNLD7XUWUndKQrkWSqgr1cT0LdJAnzAs76/ISCOEQD9vrkgAAig37cXEMe8xysIII55h1cQQBwTgNqAt3gF/4WIY97gFQQQxwiAAl9i4pgDvIJvIeIYCWD+Gm0fQC21nJX28bKl+0ryrLSHly3dU5JnBSAAKmAXL1u6qyTPCkAAVMAOXrZ0R0melV7jNTf29JrjiGMkQM+maoBez1pAHPMKz/z+sYA4xj3gJZ79/SMBcYx7wAu8ggDiGPeA53gFAcQxz/AK/gsRx0wzoMCXuGWA/VuIOOYpXsHXKHGMCKCWWs4KQHXANl62dFtJnpW28LKlW0ryrABUB2ziZUs3leRZ/gEbeNnSDSV5ln/AE7zmxo5ecxxxjATo2FQN0OlYC4hjHuOZ3z8WEMc8wisIII7hAZ2OvWAaAQ/xCgKIYwLgF1DiX4g45gFeQQBxzH28gl9i4hgFYP8Wahtg/holjlnHy97w60ryLP+ANbxs6ZqSPMs/YBUvW7qqJM8KQHXACl62dEVJnpWW8bKly0ryrAB4B3T1RMA9PNPzJwnEMQqg27UWtAvods0F0wi4i2d//0hAHBOA2oA7eAUBxDHuAbfxCv4LEce4B9zCK/glJo5RAPZvobYB5q9R4pglvOwNv6Qkz0qLeNnSRSV5VgACoAIW8LKlC0ryrAAEQAXM42VL55XkWWkOL1s6pyTPUgEzejUBMzZJgJt41vc3BMQxN/DM7x8LiGPcA67j2d8/EhDHBKA24BpeQQBxzFW8ggDiGB5Q4l8oABCgwJeYOGaIV/AtRBwjAcxfo+0DqKWWs5K8dTi0EzC/nyWaWDqrpc5KA6bGzoGaOCuJWwcDO8GgRcD/tQOblFnpivP8Ay47zz/gkvP8Ay46L11wXgACoALOOy8AAVAB55yXzjovANUBZ5znH3Daef4Bp5wXgOqAk85LJ5wXgNr9BQUmyXXCrD85AAAAAElFTkSuQmCC',sizes:'192x192',type:'image/png',purpose:'any'},{src:'data:image/png;base64,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',sizes:'512x512',type:'image/png',purpose:'any'}]};
+  var l=document.createElement('link');l.rel='manifest';l.href='data:application/manifest+json;charset=utf-8,'+encodeURIComponent(JSON.stringify(m));document.head.appendChild(l);
+}catch(e){}})();
+</script>
+<style>
+:root{--bg:#070F1E;--bg2:#10304A;--card:rgba(255,255,255,.08);--line:rgba(255,255,255,.16);--ink:#F2F8FF;--mut:#A9BED0;--acc:#5EEAD4;--ball:#E8F03A;--sky:#38BDF8;--bad:#FB7185;--vio:#8B5CF6;--mag:#EC4899;--ora:#FB923C;--r:20px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+html{background:var(--bg)}
+body{background:radial-gradient(900px 520px at 0% -5%,rgba(139,92,246,.55),transparent 60%),radial-gradient(800px 520px at 105% 0%,rgba(20,184,166,.42),transparent 60%),radial-gradient(900px 600px at 50% 112%,rgba(236,72,153,.32),transparent 60%),linear-gradient(180deg,#070F1E,#0B2038);background-attachment:scroll;color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+main{max-width:640px;margin:0 auto;padding:18px 16px 8px}
+h1{font-size:1.75rem;line-height:1.15;margin:6px 0 6px;letter-spacing:-.01em;background:linear-gradient(90deg,#fff,#A5F3FC 60%,#F5D0FE);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:1.1rem;margin:26px 0 8px;display:flex;align-items:center;gap:10px}
+h2::before{content:"";width:6px;height:1.1em;border-radius:4px;background:linear-gradient(180deg,var(--acc),var(--vio))}
+p{margin:6px 0}
+a{color:var(--acc)}
+.mut{color:var(--mut)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.spread{justify-content:space-between}
+.card{background:linear-gradient(160deg,rgba(255,255,255,.11),rgba(255,255,255,.05));border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin:10px 0;box-shadow:0 8px 28px rgba(0,0,0,.25)}
+a.card{display:block;color:inherit;text-decoration:none}
+.btn{display:inline-block;border:0;border-radius:15px;padding:13px 18px;font:inherit;font-weight:800;background:linear-gradient(135deg,#F3FA3C,#5EEAD4);color:#06202E;text-decoration:none;cursor:pointer;text-align:center;box-shadow:0 6px 20px rgba(94,234,212,.35)}
+.btn.sec{background:rgba(255,255,255,.13);color:var(--ink);box-shadow:none;border:1px solid var(--line)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.sky{background:linear-gradient(135deg,#38BDF8,#818CF8);color:#04152A;box-shadow:0 6px 20px rgba(56,189,248,.4)}
+.btn.small{padding:8px 13px;font-size:.9rem;border-radius:12px}
+.btn.block{display:block;width:100%;font-size:1.05rem;padding:15px}
+.btn[disabled]{opacity:.4;box-shadow:none}
+.chip{border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--ink);border-radius:999px;padding:10px 15px;font:inherit;font-weight:700;min-width:46px;cursor:pointer}
+.chip.on{background:linear-gradient(135deg,#5EEAD4,#38BDF8);color:#04202E;border-color:transparent;box-shadow:0 4px 14px rgba(56,189,248,.4)}
+.badge{display:inline-block;border-radius:999px;padding:3px 11px;font-size:.78rem;font-weight:800;background:rgba(255,255,255,.16)}
+.badge.sky{background:rgba(56,189,248,.25);color:#7DD3FC}
+.badge.ok{background:rgba(94,234,212,.25);color:#99F6E4}
+.bar{height:10px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#5EEAD4,#38BDF8,#A78BFA);border-radius:99px}
+.rung{display:flex;gap:10px;align-items:center;background:linear-gradient(90deg,color-mix(in srgb,var(--c,#888) 24%,transparent),rgba(255,255,255,.05) 70%);border:1px solid var(--line);border-left:9px solid var(--c,#888);border-radius:16px;padding:10px 10px 10px 12px;margin:8px 0;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.rung.work{outline:2px solid var(--ball);box-shadow:0 0 0 4px rgba(232,240,58,.14),0 8px 24px rgba(232,240,58,.18)}
+.rung .n{font-weight:900;font-size:1.25rem;min-width:28px;color:var(--c);text-shadow:0 0 14px var(--c)}
+.rung .t{flex:1;line-height:1.3}
+.rung.done{--c:var(--sky);border-left-color:var(--sky)}
+.mv{display:flex;flex-direction:column;gap:4px}
+.mv button{border:1px solid var(--line);background:rgba(255,255,255,.1);color:var(--ink);border-radius:8px;width:34px;height:26px;font-size:.8rem;cursor:pointer}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#6D28D9 0%,#0EA5E9 58%,#14B8A6 100%);border:1px solid rgba(255,255,255,.25);border-radius:24px;padding:18px;margin:12px 0;box-shadow:0 14px 40px rgba(14,165,233,.35)}
+.hero::after{content:"";position:absolute;right:-50px;top:-50px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.35),transparent 65%);pointer-events:none}
+.hero.warm{background:linear-gradient(135deg,#DB2777 0%,#F97316 62%,#FACC15 100%);box-shadow:0 14px 40px rgba(249,115,22,.35)}
+.hero.gate{background:linear-gradient(135deg,#4F46E5 0%,#9333EA 55%,#EC4899 100%);box-shadow:0 14px 40px rgba(147,51,234,.4)}
+.hero .sit{font-size:1.4rem;font-weight:800;line-height:1.25;margin:8px 0}
+.hero .mut{color:rgba(255,255,255,.85)}
+.hero a{color:#fff}
+.hero .badge{background:rgba(255,255,255,.25);color:#fff}
+.hero .btn.sec{background:rgba(255,255,255,.22)}
+.hero .btn.ghost{border-color:rgba(255,255,255,.5)}
+input[type=text],input[type=time],textarea{width:100%;font:inherit;color:var(--ink);background:rgba(255,255,255,.09);border:1px solid var(--line);border-radius:12px;padding:12px}
+label.check{display:flex;gap:12px;align-items:flex-start;padding:8px 0}
+label.check input{width:22px;height:22px;margin-top:2px;accent-color:var(--acc)}
+#nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom));width:min(520px,calc(100% - 20px));display:flex;background:rgba(9,20,38,.82);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:6px;z-index:5;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+#nav a{flex:1;text-align:center;text-decoration:none;color:var(--mut);padding:8px 2px;border-radius:18px;font-size:.72rem;font-weight:700}
+#nav a .ic{display:block;font-size:1.25rem;line-height:1.1}
+#nav a.on{background:linear-gradient(135deg,rgba(139,92,246,.55),rgba(20,184,166,.5));color:#fff}
+body.running #nav{display:none}
+.run{text-align:center;padding-top:6px}
+.orb{width:170px;height:170px;border-radius:50%;margin:10px auto 16px;background:radial-gradient(circle at 32% 28%,#fff,#99F6E4 18%,#2DD4BF 45%,#7C3AED 100%);box-shadow:0 0 70px rgba(45,212,191,.55),0 0 140px rgba(124,58,237,.35);animation:br 8s ease-in-out infinite}
+@keyframes br{0%,100%{transform:scale(.8)}37%{transform:scale(1.1)}}
+.orb.vis{background:radial-gradient(circle at 32% 28%,#fff,#FDE68A 18%,#FB923C 45%,#DB2777 100%);box-shadow:0 0 70px rgba(251,146,60,.55),0 0 140px rgba(219,39,119,.4)}
+@media (prefers-reduced-motion:reduce){.orb{animation:none}}
+.phase{font-weight:800;color:var(--acc);margin-bottom:6px;letter-spacing:.02em}
+.big{font-size:1.55rem;font-weight:800;line-height:1.3;min-height:6.2em;display:flex;align-items:center;justify-content:center;padding:0 6px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:112px;background:linear-gradient(135deg,#F3FA3C,#5EEAD4);color:#06202E;padding:10px 16px;border-radius:14px;font-weight:800;z-index:9;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+svg text{fill:var(--mut);font-size:10px}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<nav id="nav" aria-label="Navigazione">
+  <a href="#/scala" data-tab="scala"><span class="ic">🪜</span>Scala</a>
+  <a href="#/corso" data-tab="corso"><span class="ic">🎓</span>Corso</a>
+  <a href="#/sessione" data-tab="sessione"><span class="ic">🎬</span>Esercizio</a>
+  <a href="#/storico" data-tab="storico"><span class="ic">📈</span>Storico</a>
+  <a href="#/altro" data-tab="altro"><span class="ic">⚙️</span>Altro</a>
+</nav>
+<script>
+(function () {
+'use strict';
+const KEY = 'scala_v1', MAXL = 10;
+const $ = (s, r) => (r || document).querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const dk = d => { d = d || new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const fdate = ts => { const d = new Date(ts); return d.getDate() + '/' + (d.getMonth() + 1); };
+const app = $('#app');
+
+// ---------- Dati ----------
+const LIB = [
+  'Match point in un torneo, giocare sciolto',
+  'Servire per chiudere il set o la partita',
+  'Finale di torneo',
+  'Tie-break decisivo',
+  'Pubblico ostile che fischia o disturba',
+  'Avversario antipatico o polemico che cerca il conflitto',
+  'Avversario che contesta le mie chiamate',
+  'Arbitro che sbaglia chiamate importanti',
+  'Avversario infortunato che continua a giocare',
+  'Compagno di doppio nervoso o non centrato',
+  'Dopo un errore banale su una palla facile',
+  'Dopo aver sprecato un vantaggio (da 5-2 a 5-5)',
+  'Secondo servizio sul 30-40',
+  'Mi tremano braccio e gambe quando sono avanti',
+  'Partita partita male, sono sotto 0-4',
+  'Giocare davanti a persone importanti (allenatore, famiglia)',
+  'Contro un avversario che devo battere per forza',
+  'Prima partita dopo una brutta sconfitta',
+  'Condizioni difficili: vento, sole, rumore',
+  'Cambio di compagno all\'ultimo momento',
+  'Giocare contro un amico o un compagno di club',
+  'Riscaldamento corto o entrare in campo in ritardo'
+].map((t, i) => ({ id: 'l' + i, t: t.replace('Partita partita male', 'Partita iniziata male') }));
+const DEF = { sit: [], order: [], focus: null, level: 1, sessions: [], tests: [], tas: [], vis: [], auto: [], unlocked: false, cstart: null, voice: true, pace: 10, rem: '21:00' };
+let S = load();
+function load() { try { const o = JSON.parse(localStorage.getItem(KEY)); if (o && typeof o === 'object') return Object.assign({}, DEF, o); } catch (e) {} return JSON.parse(JSON.stringify(DEF)); }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+const byId = id => S.sit.find(x => x.id === id);
+const doneList = () => S.sit.filter(x => x.st === 'done').sort((a, b) => (b.sup || 0) - (a.sup || 0));
+function cleanOrder() { S.order = S.order.filter(id => { const x = byId(id); return x && x.st === 'on'; }); }
+function working() { cleanOrder(); if (S.focus && S.order.includes(S.focus)) return byId(S.focus); const id = S.order[S.order.length - 1]; return id ? byId(id) : null; }
+function colorAt(i, n) { const t = n <= 1 ? 0.5 : i / (n - 1); return 'hsl(' + Math.round(t * 130) + ',78%,60%)'; }
+function addSit(text, libId) {
+  text = String(text || '').trim(); if (!text) return false;
+  cleanOrder(); if (S.order.length >= MAXL) { toast('La scala ha già 10 situazioni. Superane una o rimuovila.'); return false; }
+  let x = libId ? byId(libId) : null;
+  if (!x) { x = { id: libId || 'c' + Date.now(), t: text, st: 'off', custom: !libId }; S.sit.push(x); }
+  x.st = 'on'; S.order.unshift(x.id); save(); return true;
+}
+function sessionsOf(id) { return S.sessions.filter(s => s.sit === id); }
+function ready(id) {
+  const ss = sessionsOf(id).slice(-2); if (ss.length < 2) return false;
+  return ss.every(s => Math.max.apply(null, s.cycles.map(c => c.peak)) <= 3 && s.post <= 2);
+}
+function toast(m) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
+function set(h) { app.innerHTML = h; window.scrollTo(0, 0); }
+
+// ---------- Training autogeno ----------
+const TAG = [
+  { n: 'Pesantezza', d: 'Braccia e gambe pesanti', f: ['Il braccio destro è pesante.', 'Il braccio sinistro è pesante.', 'La gamba destra è pesante.', 'La gamba sinistra è pesante.', 'Tutto il corpo è pesante e rilassato.'] },
+  { n: 'Calore', d: 'Braccia e gambe calde', f: ['Il braccio destro è caldo.', 'Il braccio sinistro è caldo.', 'La gamba destra è calda.', 'La gamba sinistra è calda.', 'Tutto il corpo è caldo e rilassato.'] },
+  { n: 'Cuore', d: 'Battito calmo e regolare', f: ['Il cuore batte calmo e regolare.', 'Il battito è tranquillo.'] },
+  { n: 'Respiro', d: 'Respiro che si lascia respirare', f: ['Il respiro è calmo e regolare.', 'Respiro e mi lascio respirare.'] },
+  { n: 'Addome', d: 'Calore al centro del corpo', f: ['L\'addome è caldo.', 'Il calore si diffonde al centro del corpo.'] },
+  { n: 'Fronte', d: 'Fronte fresca, mente chiara', f: ['La fronte è fresca.', 'La mente è chiara e tranquilla.'] }
+];
+function buildTA(level) {
+  const p = S.pace || 10; const q = [{ t: 'Mettiti comodo. Chiudi gli occhi.', s: 8 }, { t: 'Sono calmo.', s: 8 }];
+  for (let g = 0; g < level; g++) { const reps = g === level - 1 ? 2 : 1; TAG[g].f.forEach(f => { for (let r = 0; r < reps; r++) q.push({ t: f, s: p }); }); }
+  q.push({ t: 'Sono calmo, centrato. Il mio respiro è regolare e profondo.', s: 10 });
+  return q;
+}
+const RIPRESA = [{ t: 'Ora riprendo. Stringo i pugni.', s: 6 }, { t: 'Piego le braccia e respiro profondo.', s: 6 }, { t: 'Apro gli occhi.', s: 5 }];
+const LAYERS = {
+  colori: 'Guarda i colori: il campo, le linee, la pallina, i vestiti.',
+  suoni: 'Ascolta i suoni: la pallina, il pubblico, la tua voce.',
+  sapori: 'Senti il sapore in bocca: l\'acqua, il sudore, la gomma della pallina.',
+  respiro: 'Senti il respiro: regolare e profondo, anche dentro la scena.',
+  tensione: 'Senti spalle, braccio e mano sulla racchetta: sono sciolti.'
+};
+const LAYER_N = { colori: 'Colori', suoni: 'Suoni', sapori: 'Sapori', respiro: 'Respiro', tensione: 'Tensione' };
+function visSteps(x, layers, secs) {
+  const q = [{ t: 'Immagina la scena: ' + x.t, s: 15 }];
+  let tot = 15; layers.forEach(l => { q.push({ t: LAYERS[l], s: 12 }); tot += 12; });
+  const rest = Math.max(0, secs - tot); if (rest > 0) q.push({ t: 'Resta nella scena. Respira regolare e profondo.', s: rest });
+  return q;
+}
+function backSteps(peak) {
+  const q = [{ t: 'Esco dalla scena. Apro la mente.', s: 7 }, { t: 'Sono calmo e centrato.', s: 8 }, { t: 'Il mio respiro è regolare e profondo.', s: 9 }, { t: 'Il corpo è pesante e caldo.', s: 8 }];
+  if (peak >= 6) { q.push({ t: 'Espiro lento, più a lungo di quanto inspiro.', s: 10 }); q.push({ t: 'Sono calmo. Lascio andare la scena.', s: 10 }); }
+  return q;
+}
+const BREATH = (() => { const q = []; for (let i = 0; i < 7; i++) { q.push({ t: 'Inspira dal naso. 3 secondi.', s: 3 }); q.push({ t: 'Espira lento. 5 secondi.', s: 5 }); } return q; })();
+
+
+// ---------- Corso base ----------
+const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
+const taPassed = l => { const a = S.tas.filter(t => t.level === l); return a.length >= 4 && avg(a.slice(-3).map(t => t.rel)) >= 6; };
+const visPassed = l => { const a = S.vis.filter(t => t.level === l); return a.length >= 3 && avg(a.slice(-2).map(t => t.avg)) >= 3.5; };
+const lastAuto = () => S.auto[S.auto.length - 1];
+function gate() {
+  const ta = [1, 2, 3, 4].filter(taPassed).length, vi = [1, 2, 3, 4].filter(visPassed).length, la = lastAuto();
+  return { ta, vi, au: la ? la.pct : null, ok: ta === 4 && vi === 4 && !!la && la.pct >= 60 };
+}
+function curV() { for (let l = 1; l <= 6; l++) if (!visPassed(l)) return l; return 6; }
+const VDIMS = { nit: 'Nitidezza dell\'immagine', col: 'Colori', sui: 'Suoni', sap: 'Sapori e odori', cor: 'Sensazioni del corpo', con: 'Controllo: muovi e cambi l\'immagine', sta: 'Stabilità: non si dissolve', trd: '3D: profondità, giri la testa' };
+const VLEV = [
+  { n: 'Figura semplice', d: 'Una pallina gialla ferma: colore, contorno, cuciture.', dims: ['nit', 'sta'], steps: [
+    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Davanti a te c\'è una pallina da tennis gialla, ferma, sospesa nell\'aria.', 14], ['Guarda il colore giallo. Guarda il contorno rotondo.', 14], ['Guarda le cuciture bianche e la peluria.', 14], ['Allontana la pallina, poi avvicinala. Tienila ferma e nitida.', 16], ['Lasciala dissolvere lentamente. Apri gli occhi.', 8]] },
+  { n: 'Figura in movimento', d: 'Pallina che rimbalza, racchetta in mano.', dims: ['nit', 'sta', 'con', 'cor'], steps: [
+    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Hai la racchetta in mano. Senti il peso e il manico.', 13], ['Una pallina rimbalza piano davanti a te: giù, su, giù, su.', 15], ['Segui il rimbalzo con gli occhi, al ritmo del respiro.', 15], ['Colpisci piano la pallina. Senti la mano e il polso.', 15], ['Ferma l\'immagine. Falla ripartire. Poi apri gli occhi.', 12]] },
+  { n: 'Il campo vuoto', d: 'Colori e rumori di un campo senza nessuno.', dims: ['nit', 'col', 'sui', 'sta'], steps: [
+    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Sei sul campo vuoto. Guarda i colori della superficie e delle linee.', 14], ['Guarda la rete, il cielo, i bordi del campo.', 13], ['Ascolta il silenzio. Poi il rumore della pallina sul campo: toc.', 14], ['Ascolta il rumore delle scarpe sulla superficie.', 12], ['Ascolta lontano: il vento, qualche voce. Poi apri gli occhi.', 12]] },
+  { n: 'Più sensi', d: 'Sapori, odori, temperatura e vento.', dims: ['nit', 'col', 'sui', 'sap', 'cor', 'sta'], steps: [
+    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Senti la temperatura dell\'aria sulla pelle e il vento leggero.', 13], ['Senti l\'odore del campo: terra, gomma, erba o cemento.', 13], ['Senti il sapore dell\'acqua fresca che bevi.', 12], ['Senti il sapore di sale sulle labbra.', 12], ['Ora tutto insieme: colori, suoni, odori, sapori.', 16], ['Apri lentamente gli occhi.', 5]] },
+  { n: 'In 3D', d: 'Ti muovi nel campo, giri la testa, ti vedi dall\'esterno.', dims: ['nit', 'con', 'cor', 'trd', 'sta'], steps: [
+    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Guarda il campo davanti a te. Gira lentamente la testa a sinistra.', 13], ['Gira dietro di te: vedi recinzioni, teli e persone.', 13], ['Ora ti vedi dall\'esterno mentre palleggi: piccolo, in 3D.', 14], ['Rientra nel tuo corpo. Vedi con i tuoi occhi, senti i piedi.', 13], ['Muoviti nel campo: ogni passo ha il suo rumore.', 13], ['Apri lentamente gli occhi.', 5]] },
+  { n: 'Scena realistica', d: 'Una partita normale, tranquilla, con tutti i sensi.', dims: ['nit', 'col', 'sui', 'sap', 'cor', 'con', 'sta', 'trd'], steps: [
+    ['Mettiti comodo. Chiudi gli occhi. Respira calmo.', 7], ['Sei in una partita normale, punteggio basso, avversario educato.', 14], ['Guarda l\'avversario: la maglia, la posizione, i movimenti.', 13], ['Ascolta il pubblico che applaude con calma.', 12], ['Servi o rispondi: senti ogni gesto, colpisci pulito.', 15], ['Il respiro è regolare e profondo. Tutto è nitido e in 3D.', 14], ['Chiudi la scena con un respiro. Apri gli occhi.', 8]] }
+];
+const AUTO_Q = ['Sento le braccia pesanti entro 2 minuti.', 'Sento calore alle mani.', 'Il respiro diventa regolare senza sforzo.', 'Il battito rallenta quando lo voglio.', 'Resto rilassato senza addormentarmi né distrarmi.', 'Mi calmo in meno di 2 minuti anche fuori casa.', 'Rilassa spalle e mani durante la giornata.', 'Dopo l\'esercizio mi sento più sciolto di prima.'];
+const PLAN = [['1', 'Livello 1 Pesantezza', 'Livello 1 Figura semplice'], ['2', 'Livello 2 Calore', 'Livello 2 In movimento'], ['3', 'Livello 3 Cuore', 'Livello 3 Campo vuoto'], ['4', 'Livello 4 Respiro', 'Livello 4 Più sensi · via libera'], ['5', 'Livello 5 Addome', 'Livello 5 In 3D'], ['6', 'Livello 6 Fronte', 'Livello 6 Scena realistica']];
+
+// ---------- Motore sessione ----------
+let ses = null, tickId = null, wl = null;
+function speak(t) { if (!S.voice || !('speechSynthesis' in window)) return; try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'it-IT'; u.rate = 0.85; speechSynthesis.speak(u); } catch (e) {} }
+async function wakeOn() { try { if (navigator.wakeLock) wl = await navigator.wakeLock.request('screen'); } catch (e) {} }
+function wakeOff() { try { if (wl) wl.release(); } catch (e) {} wl = null; }
+function startTick() { stopTick(); tickId = setInterval(tick, 200); }
+function stopTick() { if (tickId) clearInterval(tickId); tickId = null; }
+function startTimed(steps, done) {
+  ses.q = steps; ses.qi = 0; ses.doneCb = done; ses.paused = false;
+  ses.cum = []; let a = 0; steps.forEach(s => { ses.cum.push(a); a += s.s * 1000; }); ses.total = a;
+  setStep(); render(); startTick();
+}
+function setStep() { const st = ses.q[ses.qi]; ses.dur = st.s * 1000; ses.tEnd = Date.now() + ses.dur; speak(st.t); }
+function tick() {
+  if (!ses || !ses.q || ses.paused) return;
+  const now = Date.now();
+  if (now >= ses.tEnd) {
+    ses.qi++;
+    if (ses.qi >= ses.q.length) { stopTick(); const d = ses.doneCb; ses.q = null; d(); return; }
+    setStep(); const e = $('#rt'); if (e) e.textContent = ses.q[ses.qi].t;
+  }
+  const left = Math.max(0, ses.tEnd - now), el = ses.cum[ses.qi] + (ses.dur - left);
+  const p = $('#rp'); if (p) p.style.width = Math.min(100, 100 * el / ses.total) + '%';
+  const s = $('#rs'); if (s) s.textContent = Math.ceil((ses.total - el) / 1000) + ' s alla fine di questa fase';
+}
+function abort() { stopTick(); try { speechSynthesis.cancel(); } catch (e) {} wakeOff(); ses = null; document.body.classList.remove('running'); }
+function render() { route(true); }
+
+// ---------- Viste ----------
+const view = {};
+view.scala = function () {
+  cleanOrder(); const n = S.order.length, w = working(), dn = doneList();
+  let h = '<h1>Scala della calma</h1><p class="mut">Un gradino alla volta: dal più morbido (in basso) al più difficile (in alto).</p>';
+  if (!n && !dn.length) {
+    h += '<div class="card"><h2 style="margin-top:0">Costruisci la tua scala</h2><p>Scegli da 5 a 10 situazioni che ti fanno perdere il controllo in partita. Poi le metti in ordine: 1 la più difficile, 10 la più abbordabile.</p><a class="btn" href="#/scelta">Scegli le situazioni</a></div>';
+    set(h); return;
+  }
+  if (w) {
+    const pos = S.order.indexOf(w.id) + 1, ss = sessionsOf(w.id), last = ss[ss.length - 1], rd = ready(w.id);
+    h += `<div class="hero"><div class="row spread"><span class="badge">Posizione ${pos} di ${n}</span>${rd ? '<span class="badge ok">Pronta da superare</span>' : ''}</div>
+      <div class="sit">${esc(w.t)}</div>
+      <p class="mut">${ss.length ? 'Esercizi fatti: ' + ss.length + (last ? ' · ultimo picco di agitazione ' + Math.max.apply(null, last.cycles.map(c => c.peak)) + '/10' : '') : 'Ancora nessun esercizio su questa situazione.'}</p>
+      ${S.unlocked ? '' : '<p class="mut" style="margin:6px 0">Prima completa il <a href="#/corso">corso base</a>. Intanto prepara la lista.</p>'}<div class="row" style="margin-top:10px"><a class="btn" href="${S.unlocked ? '#/sessione' : '#/corso'}">${S.unlocked ? 'Inizia l\'esercizio' : 'Vai al corso base'}</a>
+      <button class="btn ${rd ? 'sky' : 'sec'}" data-act="sup">Superata ✓</button>
+      <a class="btn sec" href="#/test">Provata in partita</a></div>
+      ${rd ? '<p class="mut" style="margin-top:8px">Gli ultimi 2 esercizi sono andati bene (picco 3 o meno, fine 2 o meno). Se in partita ti senti tranquillo, segnala come superata.</p>' : '<p class="mut" style="margin-top:8px">Si considera pronta dopo 2 esercizi di fila con picco 3 o meno e agitazione finale 2 o meno.</p>'}</div>`;
+  } else h += '<div class="card"><b>Scala completata 🎉</b><p class="mut">Hai superato tutte le situazioni. Aggiungine di nuove quando vuoi.</p></div>';
+  h += '<div class="row spread"><h2 style="margin:18px 0 4px">La mia scala</h2><a class="btn small sec" href="#/scelta">+ Situazioni</a></div><p class="mut" style="margin:0 0 6px">1 è la più difficile, ' + (n || 10) + ' la più morbida. Sposta con le frecce.</p>';
+  S.order.forEach((id, i) => {
+    const x = byId(id), c = colorAt(i, n), isW = w && w.id === id;
+    h += `<div class="rung ${isW ? 'work' : ''}" style="--c:${c}"><div class="n">${i + 1}</div><div class="t">${esc(x.t)}${isW ? '<div class="badge" style="margin-top:4px;background:rgba(232,240,58,.2);color:#E8F03A">Lavoro qui</div>' : ''}</div>
+      ${isW ? '' : `<button class="btn small sec" data-act="focus" data-id="${id}">Lavora qui</button>`}
+      <div class="mv"><button data-act="up" data-id="${id}" aria-label="Su">▲</button><button data-act="dn" data-id="${id}" aria-label="Giù">▼</button></div></div>`;
+  });
+  if (dn.length) {
+    h += '<h2>Superate</h2>' + dn.map(x => `<div class="rung done"><div class="n">✓</div><div class="t">${esc(x.t)}<div class="mut" style="font-size:.85rem">Superata il ${fdate(x.sup)}</div></div><button class="btn small ghost" data-act="undo" data-id="${x.id}">Riapri</button></div>`).join('');
+  }
+  set(h);
+};
+view.scelta = function () {
+  cleanOrder(); const n = S.order.length;
+  let h = `<a href="#/scala" style="text-decoration:none">‹ Scala</a><h1>Scegli le situazioni</h1><p class="mut">Nella scala: <b>${n}</b> di ${MAXL}. Tocca per aggiungere. Poi ordinale nella schermata Scala.</p>
+    <div class="card"><b>Una tua situazione</b><div style="margin:8px 0"><input type="text" id="cust" placeholder="Es. Match point contro il mio rivale di sempre" maxlength="120"></div><button class="btn small" data-act="addc">Aggiungi</button></div><h2>Suggerite</h2>`;
+  LIB.forEach(l => {
+    const x = byId(l.id), st = x ? x.st : 'off';
+    h += `<div class="card" style="display:flex;gap:10px;align-items:center"><div style="flex:1">${esc(l.t)}</div>${st === 'on' ? '<span class="badge ok">Nella scala</span>' : st === 'done' ? '<span class="badge sky">Superata</span>' : `<button class="btn small sec" data-act="addl" data-id="${l.id}">Aggiungi</button>`}</div>`;
+  });
+  const cu = S.sit.filter(x => x.custom);
+  if (cu.length) {
+    h += '<h2>Le tue</h2>' + cu.map(x => `<div class="card" style="display:flex;gap:10px;align-items:center"><div style="flex:1">${esc(x.t)}</div>${x.st === 'on' ? `<button class="btn small ghost" data-act="rm" data-id="${x.id}">Togli</button>` : x.st === 'done' ? '<span class="badge sky">Superata</span>' : `<button class="btn small sec" data-act="addl" data-id="${x.id}">Aggiungi</button>`}</div>`).join('');
+  }
+  set(h);
+};
+view.test = function () {
+  const w = working(); if (!w) { location.hash = '#/scala'; return; }
+  set(`<a href="#/scala" style="text-decoration:none">‹ Scala</a><h1>Provata in partita</h1><div class="card"><b>${esc(w.t)}</b></div>
+    <h2>Quanto sei rimasto calmo? (0 fuori controllo, 10 calmo)</h2><div class="row" id="tcalma">${[0,1,2,3,4,5,6,7,8,9,10].map(i => `<button class="chip" data-act="tc" data-v="${i}">${i}</button>`).join('')}</div>
+    <h2>Il respiro era regolare e profondo?</h2><div class="row"><button class="chip" data-act="tr" data-v="1">Sì</button><button class="chip" data-act="tr" data-v="0">No</button></div>
+    <h2>Nota</h2><textarea id="tnote" rows="3" placeholder="Cosa è successo?"></textarea>
+    <div style="margin-top:14px"><button class="btn" data-act="tsave">Salva</button></div>`);
+  window._t = { c: null, r: null };
+};
+view.training = function () { location.replace('#/corso'); };
+view.corso = function () {
+  if (ses && ses.view === 'corso') return renderRun();
+  const g = gate(), cnt = l => S.tas.filter(t => t.level === l).length, vc = S.vis.length;
+  const ck = ok => ok ? '✅' : '⬜';
+  let h = `<h1>Corso base</h1><p class="mut">Prima della scala impari due abilità: rilassarti (training autogeno) e visualizzare in modo nitido. Servono circa 4 settimane, 6 per il corso completo.</p>
+  <div class="hero gate"><b>Via libera alla desensibilizzazione</b>
+  <p style="margin:8px 0">${ck(g.ta === 4)} Training autogeno: livelli 1–4 superati (${g.ta}/4)<br>${ck(g.vi === 4)} Visualizzazione: livelli 1–4 superati (${g.vi}/4)<br>${ck(g.au != null && g.au >= 60)} Autovalutazione almeno 60% (${g.au == null ? 'non fatta' : g.au + '%'})</p>`;
+  if (S.unlocked) h += '<span class="badge ok">Percorso sbloccato</span> <a class="btn small" href="#/sessione">Vai all\'esercizio</a>';
+  else if (g.ok) h += '<p>Hai raggiunto il livello minimo. Confermi di voler iniziare la scala?</p><button class="btn" data-act="unlock">Confermo, sblocca il percorso</button>';
+  else h += '<p class="mut">Il percorso si sblocca quando i tre punti sono completati.</p><button class="btn ghost small" data-act="unlockf">Sblocca comunque</button>';
+  h += '</div>';
+  h += `<h2>Oggi, 10–15 minuti</h2><div class="card"><div class="row spread"><span>🌀 Training autogeno, livello ${S.level}</span><button class="btn small" data-act="ta" data-v="${S.level}">Avvia</button></div>
+    <div class="row spread" style="margin-top:10px"><span>🎬 Visualizzazione, livello ${curV()}</span><button class="btn small" data-act="va" data-v="${curV()}">Avvia</button></div></div>
+    <div class="card"><div class="row spread"><span>📝 Autovalutazione${lastAuto() ? ' · ultima ' + lastAuto().pct + '%' : ''}</span><a class="btn small sec" href="#/auto">Compila</a></div><p class="mut" style="margin:6px 0 0">Ogni settimana, 8 domande.</p></div>
+    <h2>Le 6 settimane</h2><div class="card"><table style="width:100%;border-collapse:collapse;font-size:.92rem"><tr class="mut"><td>Sett.</td><td>Training</td><td>Visualizzazione</td></tr>${PLAN.map(r => `<tr style="border-top:1px solid var(--line)"><td style="padding:6px 0"><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table>
+    <p class="mut">Il ritmo è tuo: si sale di livello quando i criteri sono rispettati, non quando passa la settimana. Meglio poco ogni giorno.</p></div>
+    <h2>Training autogeno</h2>
+    <div class="card"><div class="row spread"><span>Voce guida</span><button class="chip ${S.voice ? 'on' : ''}" data-act="voice">${S.voice ? 'Attiva' : 'Spenta'}</button></div>
+    <div class="row spread" style="margin-top:10px"><span>Ritmo</span><span class="row">${[[8, 'Veloce'], [10, 'Normale'], [14, 'Lento']].map(r => `<button class="chip ${S.pace === r[0] ? 'on' : ''}" data-act="pace" data-v="${r[0]}">${r[1]}</button>`).join('')}</span></div></div>`;
+  TAG.forEach((gx, i) => {
+    const l = i + 1, mins = Math.round(buildTA(l).reduce((a, x) => a + x.s, 0) / 60 + 0.4), ps = taPassed(l), ar = S.tas.filter(t => t.level === l);
+    h += `<div class="card" style="${l === S.level ? 'border-color:var(--acc)' : ''}"><div class="row spread"><b>Livello ${l}: ${gx.n}</b>${ps ? '<span class="badge ok">Superato</span>' : l === S.level ? '<span class="badge">Il tuo livello</span>' : ''}</div>
+      <p class="mut">${esc(gx.d)}. Circa ${mins} min · sessioni ${cnt(l)}/4${ar.length ? ' · rilassamento ' + avg(ar.slice(-3).map(t => t.rel)).toFixed(1) + '/10' : ''}</p>
+      <div class="row"><button class="btn small" data-act="ta" data-v="${l}">Avvia</button>${l !== S.level ? `<button class="btn small ghost" data-act="lvl" data-v="${l}">Imposta come mio</button>` : ''}</div></div>`;
+  });
+  h += '<p class="mut">Si supera un livello con 4 sessioni e rilassamento medio 6 su 10 nelle ultime 3.</p><h2>Visualizzazione</h2>';
+  VLEV.forEach((v, i) => {
+    const l = i + 1, ar = S.vis.filter(t => t.level === l), ps = visPassed(l);
+    h += `<div class="card"><div class="row spread"><b>Livello ${l}: ${v.n}</b>${ps ? '<span class="badge ok">Superato</span>' : ''}</div><p class="mut">${esc(v.d)} · sessioni ${ar.length}/3${ar.length ? ' · nitidezza ' + avg(ar.slice(-2).map(t => t.avg)).toFixed(1) + '/5' : ''}</p><button class="btn small" data-act="va" data-v="${l}">Avvia</button></div>`;
+  });
+  h += '<p class="mut">Si supera un livello con 3 sessioni e punteggio medio 3,5 su 5 nelle ultime 2. Dal livello 4 hai il minimo per la scala.</p>';
+  h += '<p class="mut">Se senti vertigini o disagio, interrompi. In caso di ipotensione, diabete in terapia o problemi psichici chiedi prima al medico.</p>';
+  set(h);
+};
+view.auto = function () {
+  window._a = Array(AUTO_Q.length).fill(null);
+  const L = ['Per niente', 'Poco', 'Abbastanza', 'Molto', 'Del tutto'];
+  set(`<a href="#/corso" style="text-decoration:none">‹ Corso</a><h1>Autovalutazione</h1><p class="mut">Pensa all'ultima settimana di esercizi.</p>` +
+    AUTO_Q.map((q, i) => `<div class="card"><b>${i + 1}. ${esc(q)}</b><div class="row" style="margin-top:8px">${L.map((t, v) => `<button class="chip" data-act="ai" data-i="${i}" data-v="${v}" style="padding:8px 10px;font-size:.85rem">${t}</button>`).join('')}</div></div>`).join('') + '<button class="btn block" data-act="asave">Salva</button>');
+};
+view.sessione = function () {
+  if (ses && ses.view === 'sessione') return renderRun();
+  if (!S.unlocked) {
+    const g = gate();
+    set(`<h1>Esercizio A</h1><div class="card" style="border-left:6px solid var(--ball)"><b>Prima il corso base</b><p class="mut">La desensibilizzazione parte quando training autogeno e visualizzazione hanno raggiunto il livello minimo.</p>
+    <p>${g.ta === 4 ? '✅' : '⬜'} Training: ${g.ta}/4 livelli<br>${g.vi === 4 ? '✅' : '⬜'} Visualizzazione: ${g.vi}/4 livelli<br>${g.au != null && g.au >= 60 ? '✅' : '⬜'} Autovalutazione ${g.au == null ? 'non fatta' : g.au + '%'}</p>
+    <div class="row"><a class="btn" href="#/corso">Vai al corso</a><button class="btn ghost small" data-act="unlockf">Sblocca comunque</button></div></div>`); return;
+  }
+  const w = working();
+  if (!w) { set('<h1>Esercizio</h1><div class="card"><p>Per iniziare serve una situazione nella scala.</p><a class="btn" href="#/scelta">Scegli le situazioni</a></div>'); return; }
+  if (!view._cfg) view._cfg = { cycles: 3, vis: 45, layers: ['respiro'] };
+  const c = view._cfg;
+  set(`<h1>Esercizio A</h1><p class="mut">Training autogeno, visualizzazione, uscita e rientro. Si ripete finché la scena non agita più.</p>
+    <div class="hero warm"><span class="badge">Situazione di lavoro</span><div class="sit">${esc(w.t)}</div><a href="#/scala" style="font-size:.9rem">Cambia situazione</a></div>
+    <div class="card"><b>Livello di training: ${S.level}</b> <a href="#/training" style="font-size:.9rem">(cambia)</a>
+    <h2 style="margin-top:14px">Quante visualizzazioni</h2><div class="row">${[2, 3, 4, 5].map(v => `<button class="chip ${c.cycles === v ? 'on' : ''}" data-act="cy" data-v="${v}">${v}</button>`).join('')}</div>
+    <h2>Durata di ogni visualizzazione</h2><div class="row">${[30, 45, 60, 90].map(v => `<button class="chip ${c.vis === v ? 'on' : ''}" data-act="vs" data-v="${v}">${v} s</button>`).join('')}</div>
+    <h2>Aggiungi alla scena</h2><div class="row">${Object.keys(LAYERS).map(k => `<button class="chip ${c.layers.includes(k) ? 'on' : ''}" data-act="ly" data-v="${k}">${LAYER_N[k]}</button>`).join('')}</div></div>
+    <button class="btn block" data-act="startfull">Inizia</button>
+    <p class="mut" style="margin-top:12px">Durante la scena, se l'agitazione sale troppo premi <b>Esco</b>: rientri nel rilassamento e riprovi.</p>`);
+};
+function renderRun() {
+  document.body.classList.add('running');
+  const ph = ses.phase, w = ses.sit ? byId(ses.sit) : null;
+  const chips = (act, from) => `<div class="row" style="justify-content:center;margin:12px 0">${[0,1,2,3,4,5,6,7,8,9,10].map(i => `<button class="chip" data-act="${act}" data-v="${i}">${i}</button>`).join('')}</div>`;
+  let h = '<div class="run">';
+  const timed = ses.q && ['ta', 'vis', 'back', 'breath', 'rip', 'vex'].includes(ph);
+  if (timed) {
+    const lab = { ta: 'Training autogeno livello ' + ses.level, vis: 'Visualizzazione ' + (ses.cyc + 1) + ' di ' + ses.cycles, back: 'Rientro: calmo e centrato', breath: 'Respiro regolare', rip: 'Ripresa', vex: 'Visualizzazione livello ' + ses.level }[ph];
+    h += `<div class="orb ${ph === 'vis' ? 'vis' : ''}"></div><div class="phase">${esc(lab)}</div><div class="big" id="rt">${esc(ses.q[ses.qi].t)}</div><div class="bar"><i id="rp"></i></div><p class="mut" id="rs"></p>
+    <div class="row" style="justify-content:center;margin-top:12px"><button class="btn sec small" data-act="pause">${ses.paused ? 'Riprendi' : 'Pausa'}</button><button class="btn sec small" data-act="skip">Salta</button>${ph === 'vis' ? '<button class="btn small" style="background:var(--bad);color:#2a0606" data-act="exit">Esco, troppa agitazione</button>' : ''}<button class="btn ghost small" data-act="stop">Chiudi</button></div>`;
+  } else if (ph === 'pre') {
+    h += `<div class="phase">Prima di iniziare</div><h1>Quanta tensione senti ora?</h1><p class="mut">0 sciolto, 10 rigido</p>${chips('pre')}<button class="btn ghost small" data-act="stop">Annulla</button>`;
+  } else if (ph === 'check') {
+    h += `<div class="phase">Controllo${ses.cyc ? ' dopo la visualizzazione ' + ses.cyc : ''}</div><h1>Come stai?</h1>
+    <div class="card" style="text-align:left"><label class="check"><input type="checkbox" id="k1"><span>Sono calmo e centrato</span></label><label class="check"><input type="checkbox" id="k2"><span>Il mio respiro è regolare e profondo</span></label></div>
+    <button class="btn block" data-act="gov">${ses.cyc ? 'Prossima visualizzazione' : 'Vado alla visualizzazione'}</button>
+    <div class="row" style="justify-content:center;margin-top:10px"><button class="btn sec small" data-act="breath">Respiro 1 minuto</button><button class="btn ghost small" data-act="stop">Chiudi</button></div>`;
+  } else if (ph === 'vrate') {
+    h += `<div class="phase">Visualizzazione ${ses.cyc + 1}${ses.exit ? ' · uscito' : ''}</div><h1>Quanta agitazione hai provato nella scena?</h1><p class="mut">0 calmo, 10 fuori controllo</p>${chips('vr')}`;
+  } else if (ph === 'end') {
+    h += `<div class="phase">Fine</div><h1>Pensando ora alla scena, quanto ti agita?</h1><p class="mut">0 per niente, 10 moltissimo</p>${chips('post')}`;
+  } else if (ph === 'endnote') {
+    h += `<div class="phase">Ultimo passo</div><h1>Com'è andata?</h1><div class="card" style="text-align:left"><label class="check"><input type="checkbox" id="e1"><span>Respiro regolare e profondo alla fine</span></label><textarea id="enote" rows="3" placeholder="Nota (facoltativa)"></textarea></div><button class="btn block" data-act="esave">Salva l'esercizio</button>`;
+  } else if (ph === 'vq') {
+    const dims = VLEV[ses.level - 1].dims, ok = dims.every(k => ses.vd[k]);
+    h += `<div class="phase">Questionario</div><h1>Quanto era nitido?</h1><p class="mut">1 per niente, 5 nitidissimo</p>` + dims.map(k => `<div class="card" style="text-align:left"><b>${VDIMS[k]}</b><div class="row" style="margin-top:8px;justify-content:space-between">${[1, 2, 3, 4, 5].map(v => `<button class="chip ${ses.vd[k] === v ? 'on' : ''}" data-act="vd" data-k="${k}" data-v="${v}" style="flex:1">${v}</button>`).join('')}</div></div>`).join('') + `<button class="btn block" data-act="vsave" ${ok ? '' : 'disabled'}>Salva</button>`;
+  } else if (ph === 'tarate') {
+    h += `<div class="phase">Fine training</div><h1>Quanto ti senti rilassato?</h1><p class="mut">0 per niente, 10 molto. Serve a superare il livello.</p>${chips('tr2')}`;
+  } else if (ph === 'result') {
+    const rd = ses.sit && ready(ses.sit);
+    h += `<div class="orb"></div><h1>Salvato</h1><p>${rd ? 'Gli ultimi due esercizi sono andati bene: puoi segnare la situazione come superata.' : 'Ripeti nei prossimi giorni. Il lavoro conta più dell\'intensità.'}</p>
+    <div class="row" style="justify-content:center;margin-top:12px"><a class="btn" href="#/scala" data-act="fin">Vai alla scala</a>${rd ? '<button class="btn sky" data-act="supfin">Segna superata ✓</button>' : ''}</div>`;
+  }
+  h += '</div>';
+  set(h);
+  if (timed) tick();
+}
+view.storico = function () {
+  const w = working(), ss = S.sessions;
+  let h = '<h1>Storico</h1>';
+  const days = new Set(ss.map(s => dk(new Date(s.ts))).concat(S.tas.map(s => dk(new Date(s.ts)))));
+  h += `<div class="row"><div class="card" style="flex:1;text-align:center"><div style="font-size:1.8rem;font-weight:900">${ss.length}</div><small class="mut">esercizi A</small></div><div class="card" style="flex:1;text-align:center"><div style="font-size:1.8rem;font-weight:900">${S.tas.length}</div><small class="mut">training</small></div><div class="card" style="flex:1;text-align:center"><div style="font-size:1.8rem;font-weight:900">${doneList().length}</div><small class="mut">superate</small></div></div>`;
+  if (S.vis.length || S.auto.length || S.tas.length) {
+    h += '<h2>Corso base</h2><div class="card">' + (S.vis.length >= 2 ? '<b>Nitidezza delle visualizzazioni (1–5)</b>' + chart5(S.vis.map(x => x.avg)) : '') + (S.auto.length ? '<p><b>Autovalutazioni:</b> ' + S.auto.map(x => fdate(x.ts) + ' ' + x.pct + '%').join(' · ') + '</p>' : '') + `<p class="mut">Training: ${S.tas.length} sessioni · Visualizzazione: ${S.vis.length} sessioni</p></div>`;
+  }
+  if (w) {
+    const mine = sessionsOf(w.id);
+    h += '<h2>Situazione attuale</h2><div class="card"><b>' + esc(w.t) + '</b>' + (mine.length >= 2 ? chart([{ n: 'Picco', c: '#F87171', v: mine.map(s => Math.max.apply(null, s.cycles.map(c => c.peak))) }, { n: 'Fine', c: '#5EEAD4', v: mine.map(s => s.post) }]) + '<p class="mut">Agitazione 0–10 per esercizio. Obiettivo: le linee scendono.</p>' : '<p class="mut">Servono almeno 2 esercizi per il grafico.</p>') + '</div>';
+  }
+  if (S.tests.length) h += '<h2>Prove in partita</h2>' + S.tests.slice().reverse().slice(0, 8).map(t => { const x = byId(t.sit); return `<div class="card"><div class="row spread"><b>${fdate(t.ts)}</b><span class="badge ${t.calma >= 7 ? 'ok' : ''}">calma ${t.calma}/10</span></div><div class="mut">${esc(x ? x.t : 'Situazione')}${t.resp ? ' · respiro regolare' : ''}</div>${t.note ? '<div>' + esc(t.note) + '</div>' : ''}</div>`; }).join('');
+  if (ss.length) h += '<h2>Ultimi esercizi</h2>' + ss.slice().reverse().slice(0, 10).map(s => { const x = byId(s.sit); return `<div class="card"><div class="row spread"><b>${fdate(s.ts)}</b><span class="mut">livello ${s.level} · ${Math.round(s.secs / 60)} min</span></div><div>${esc(x ? x.t : 'Situazione')}</div><div class="mut">Prima ${s.pre}/10 · picchi ${s.cycles.map(c => c.peak + (c.exit ? '↩' : '')).join(', ')} · fine ${s.post}/10</div></div>`; }).join('');
+  else h += '<p class="mut">Ancora nessun esercizio. Inizia dalla scheda Esercizio.</p>';
+  set(h);
+};
+function chart5(v) {
+  const W = 320, H = 110, L = 22, B = 12, n = v.length, x = i => L + (W - L - 8) * i / Math.max(1, n - 1), y = t => 8 + (H - B - 8) * (1 - (t - 1) / 4);
+  let g = ''; [1, 3, 5].forEach(t => { g += `<line x1="${L}" x2="${W - 4}" y1="${y(t)}" y2="${y(t)}" stroke="rgba(255,255,255,.12)"/><text x="6" y="${y(t) + 3}">${t}</text>`; });
+  g += `<polyline fill="none" stroke="#5EEAD4" stroke-width="2.5" points="${v.map((t, i) => x(i) + ',' + y(t)).join(' ')}"/>` + v.map((t, i) => `<circle cx="${x(i)}" cy="${y(t)}" r="3" fill="#5EEAD4"/>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}</svg>`;
+}
+function chart(series) {
+  const W = 320, H = 130, L = 22, B = 16, n = Math.max.apply(null, series.map(s => s.v.length));
+  const x = i => L + (n <= 1 ? 0 : (W - L - 8) * i / (n - 1)), y = v => 8 + (H - B - 8) * (1 - v / 10);
+  let g = '';[0, 5, 10].forEach(t => { g += `<line x1="${L}" x2="${W - 4}" y1="${y(t)}" y2="${y(t)}" stroke="rgba(255,255,255,.12)"/><text x="2" y="${y(t) + 3}">${t}</text>`; });
+  series.forEach(s => { g += `<polyline fill="none" stroke="${s.c}" stroke-width="2.5" points="${s.v.map((v, i) => x(i) + ',' + y(v)).join(' ')}"/>` + s.v.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="${s.c}"/>`).join(''); });
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Andamento agitazione">${g}</svg><div class="row">${series.map(s => `<span class="badge" style="color:${s.c}">● ${s.n}</span>`).join('')}</div>`;
+}
+view.altro = function () {
+  set(`<h1>Altro</h1>
+  <h2>Salva e condividi</h2><div class="card"><div class="row"><button class="btn small" data-act="exp">Backup (file)</button><button class="btn small sec" data-act="csv">Esporta CSV</button><button class="btn small sec" data-act="share">Condividi riepilogo</button><a class="btn small sec" data-act="wa" href="#" target="_blank" rel="noopener">WhatsApp</a></div>
+  <p class="mut" style="margin-top:8px">Il backup si condivide anche su WhatsApp o Drive dal menu che si apre. Per ripristinare scegli il file qui sotto.</p><input type="file" id="imp" accept=".json,application/json"></div>
+  <h2>Promemoria</h2><div class="card"><div class="row"><span>Ogni giorno alle</span><input type="time" id="remt" value="${esc(S.rem)}" style="width:auto"></div><div style="margin-top:8px"><button class="btn small" data-act="ics">Aggiungi al calendario</button></div></div>
+  <h2>Importante</h2><div class="card"><p class="mut">Questa app è un allenamento mentale per lo sport, non una terapia. Se una situazione ti provoca ansia forte o disagio che va oltre lo sport, parlane con uno psicologo dello sport o con il medico.</p></div>
+  <p class="mut">Versione 3 · Scala della calma, colori nuovi</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
+};
+
+// ---------- Esportazioni ----------
+function dl(name, mime, text) {
+  const b = new Blob([text], { type: mime });
+  try { const f = new File([b], name, { type: mime }); if (navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f], title: name }).catch(() => {}); return; } } catch (e) {}
+  const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 600);
+}
+function summary() {
+  cleanOrder(); const w = working(), dn = doneList().length, tot = dn + S.order.length, ss = S.sessions, last = ss[ss.length - 1];
+  let t = 'Scala della calma - ' + dk() + '\nSuperate: ' + dn + ' su ' + tot + '\n';
+  if (w) t += 'Lavoro su: ' + w.t + '\n';
+  t += 'Corso: training livello ' + S.level + ', visualizzazione livello ' + curV() + (lastAuto() ? ', autovalutazione ' + lastAuto().pct + '%' : '') + '\n';
+  t += 'Esercizi A: ' + ss.length + ' · Training: ' + S.tas.length + ' · Prove in partita: ' + S.tests.length;
+  if (last) t += '\nUltimo esercizio: picco ' + Math.max.apply(null, last.cycles.map(c => c.peak)) + '/10, fine ' + last.post + '/10';
+  return t;
+}
+function csv() {
+  const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const rows = [['tipo', 'data', 'situazione', 'livello', 'pre', 'picchi', 'uscite', 'fine', 'respiro', 'minuti', 'nota']];
+  S.sessions.forEach(s => { const x = byId(s.sit); rows.push(['esercizio', dk(new Date(s.ts)), x ? x.t : '', s.level, s.pre, s.cycles.map(c => c.peak).join('|'), s.cycles.filter(c => c.exit).length, s.post, s.resp ? 'si' : 'no', Math.round(s.secs / 60), s.note || '']); });
+  S.tas.forEach(s => rows.push(['training', dk(new Date(s.ts)), '', s.level, '', '', '', s.rel, '', Math.round(s.secs / 60), '']));
+  S.vis.forEach(s => rows.push(['visualizzazione', dk(new Date(s.ts)), '', s.level, '', '', '', s.avg.toFixed(2), '', Math.round(s.secs / 60), '']));
+  S.auto.forEach(s => rows.push(['autovalutazione', dk(new Date(s.ts)), '', '', '', '', '', s.pct, '', '', '']));
+  S.tests.forEach(s => { const x = byId(s.sit); rows.push(['partita', dk(new Date(s.ts)), x ? x.t : '', '', '', '', '', s.calma, s.resp ? 'si' : 'no', '', s.note || '']); });
+  return rows.map(r => r.map(q).join(',')).join('\n');
+}
+function ics() {
+  const t = (S.rem || '21:00').split(':'), d = new Date(); d.setDate(d.getDate() + 1);
+  const p = n => String(n).padStart(2, '0'), ds = d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + 'T' + p(+t[0]) + p(+t[1]) + '00';
+  return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Scala della calma//IT', 'BEGIN:VEVENT', 'UID:scala-' + Date.now() + '@scala', 'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z', 'DTSTART:' + ds, 'DURATION:PT15M', 'RRULE:FREQ=DAILY', 'SUMMARY:Scala della calma: training e visualizzazione', 'BEGIN:VALARM', 'TRIGGER:PT0M', 'ACTION:DISPLAY', 'DESCRIPTION:Quindici minuti di esercizio', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+}
+
+// ---------- Router ----------
+function route(keep) {
+  const name = (location.hash.replace(/^#\/?/, '') || 'scala').split('/')[0];
+  if (!keep && ses && ses.view !== name) abort();
+  if (!ses) document.body.classList.remove('running');
+  const tab = { scala: 'scala', scelta: 'scala', test: 'scala', training: 'corso', corso: 'corso', auto: 'corso', sessione: 'sessione', storico: 'storico', altro: 'altro' }[name] || 'scala';
+  document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.tab === tab));
+  (view[name] || view.scala)();
+}
+window.addEventListener('hashchange', () => route());
+
+// ---------- Eventi ----------
+app.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return; const a = b.dataset.act, id = b.dataset.id, v = b.dataset.v;
+  const mv = (id, d) => { const i = S.order.indexOf(id), j = i + d; if (i < 0 || j < 0 || j >= S.order.length) return; const t = S.order[i]; S.order[i] = S.order[j]; S.order[j] = t; save(); route(); };
+  if (a === 'up') mv(id, -1); else if (a === 'dn') mv(id, 1);
+  else if (a === 'focus') { S.focus = id; save(); toast('Lavori su questa'); route(); }
+  else if (a === 'sup') { const w = working(); if (w && confirm('Segni questa situazione come superata?')) { w.st = 'done'; w.sup = Date.now(); S.focus = null; cleanOrder(); save(); toast('Superata! Passi alla successiva'); route(); } }
+  else if (a === 'undo') { const x = byId(id); if (x) { if (S.order.length >= MAXL) { toast('La scala ha già 10 situazioni'); return; } x.st = 'on'; x.sup = null; S.order.push(x.id); save(); route(); } }
+  else if (a === 'addl') { if (addSit(byId(id) ? byId(id).t : (LIB.find(l => l.id === id) || {}).t, id)) route(); }
+  else if (a === 'addc') { const i = $('#cust'); if (addSit(i && i.value)) route(); }
+  else if (a === 'rm') { const x = byId(id); if (x) { x.st = 'off'; cleanOrder(); save(); route(); } }
+  else if (a === 'tc') { window._t.c = +v; document.querySelectorAll('[data-act=tc]').forEach(x => x.classList.toggle('on', x === b)); }
+  else if (a === 'tr') { window._t.r = +v; document.querySelectorAll('[data-act=tr]').forEach(x => x.classList.toggle('on', x === b)); }
+  else if (a === 'tsave') { const w = working(); if (window._t.c == null) { toast('Scegli quanto sei rimasto calmo'); return; } S.tests.push({ ts: Date.now(), sit: w.id, calma: window._t.c, resp: window._t.r === 1, note: ($('#tnote') || {}).value || '' }); save(); toast('Salvato'); location.hash = '#/scala'; }
+  else if (a === 'voice') { S.voice = !S.voice; save(); route(); }
+  else if (a === 'pace') { S.pace = +v; save(); route(); }
+  else if (a === 'lvl') { S.level = +v; save(); toast('Livello ' + v); route(); }
+  else if (a === 'ta') { abort(); ses = { mode: 'ta', view: 'corso', level: +v, phase: 'ta', t0: Date.now() }; if (!S.cstart) S.cstart = Date.now(); wakeOn(); startTimed(buildTA(+v).concat(RIPRESA), () => { ses.phase = 'tarate'; render(); }); }
+  else if (a === 'tr2') { S.tas.push({ ts: Date.now(), level: ses.level, rel: +v, secs: (Date.now() - ses.t0) / 1000 }); const lv = ses.level; if (S.level === lv && taPassed(lv) && lv < 6) { S.level = lv + 1; toast('Livello superato! Passi al ' + (lv + 1)); } else toast('Salvato'); save(); abort(); route(); }
+  else if (a === 'va') { abort(); ses = { mode: 'vex', view: 'corso', level: +v, phase: 'vex', t0: Date.now(), vd: {} }; if (!S.cstart) S.cstart = Date.now(); wakeOn(); startTimed(VLEV[+v - 1].steps.map(x => ({ t: x[0], s: x[1] })), () => { ses.phase = 'vq'; render(); }); }
+  else if (a === 'vd') { ses.vd[b.dataset.k] = +v; const y = window.scrollY; render(); window.scrollTo(0, y); }
+  else if (a === 'vsave') { const dims = VLEV[ses.level - 1].dims, sc = {}; dims.forEach(k => sc[k] = ses.vd[k]); const av = avg(dims.map(k => ses.vd[k])), lv = ses.level; S.vis.push({ ts: Date.now(), level: lv, sc, avg: av, secs: (Date.now() - ses.t0) / 1000 }); save(); abort(); toast(visPassed(lv) ? 'Livello ' + lv + ' superato!' : 'Salvato: ' + av.toFixed(1) + '/5'); route(); }
+  else if (a === 'ai') { window._a[+b.dataset.i] = +v; b.parentNode.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === b)); }
+  else if (a === 'asave') { if (window._a.some(x => x == null)) { toast('Rispondi a tutte le domande'); return; } const pct = Math.round(100 * window._a.reduce((x, y) => x + y, 0) / (4 * AUTO_Q.length)); S.auto.push({ ts: Date.now(), items: window._a.slice(), pct }); if (!S.cstart) S.cstart = Date.now(); save(); toast('Autovalutazione ' + pct + '%'); location.hash = '#/corso'; }
+  else if (a === 'unlock') { S.unlocked = true; save(); toast('Percorso sbloccato'); location.hash = '#/scala'; route(); }
+  else if (a === 'unlockf') { if (confirm('Il corso base non è completo. Sbloccare comunque la desensibilizzazione?')) { S.unlocked = true; save(); location.hash = '#/scala'; route(); } }
+  else if (a === 'cy') { view._cfg.cycles = +v; route(); }
+  else if (a === 'vs') { view._cfg.vis = +v; route(); }
+  else if (a === 'ly') { const L = view._cfg.layers, i = L.indexOf(v); if (i >= 0) L.splice(i, 1); else L.push(v); route(); }
+  else if (a === 'startfull') { const w = working(); abort(); const c = view._cfg; ses = { mode: 'full', view: 'sessione', sit: w.id, level: S.level, cycles: c.cycles, vis: c.vis, layers: c.layers.slice(), cyc: 0, cd: [], phase: 'pre', t0: Date.now() }; wakeOn(); render(); }
+  else if (a === 'pre') { ses.pre = +v; ses.phase = 'ta'; startTimed(buildTA(ses.level), () => { ses.phase = 'check'; render(); }); }
+  else if (a === 'gov') { ses.phase = 'vis'; startTimed(visSteps(byId(ses.sit), ses.layers, ses.vis), () => { ses.exit = false; ses.phase = 'vrate'; render(); }); }
+  else if (a === 'breath') { ses.phase = 'breath'; startTimed(BREATH, () => { ses.phase = 'check'; render(); }); }
+  else if (a === 'exit') { stopTick(); ses.q = null; ses.exit = true; ses.phase = 'vrate'; try { speechSynthesis.cancel(); } catch (e) {} render(); }
+  else if (a === 'vr') { ses.cd.push({ peak: +v, exit: !!ses.exit }); ses.phase = 'back'; startTimed(backSteps(+v), () => { ses.cyc++; if (ses.cyc >= ses.cycles) ses.phase = 'end'; else ses.phase = 'check'; render(); }); }
+  else if (a === 'post') { ses.post = +v; ses.phase = 'endnote'; render(); }
+  else if (a === 'esave') { const r = { ts: Date.now(), sit: ses.sit, level: ses.level, pre: ses.pre, cycles: ses.cd, post: ses.post, resp: !!($('#e1') || {}).checked, note: ($('#enote') || {}).value || '', secs: (Date.now() - ses.t0) / 1000 }; S.sessions.push(r); save(); stopTick(); wakeOff(); ses.phase = 'result'; render(); }
+  else if (a === 'supfin') { const x = byId(ses.sit); if (x) { x.st = 'done'; x.sup = Date.now(); S.focus = null; cleanOrder(); save(); } abort(); location.hash = '#/scala'; route(); }
+  else if (a === 'fin') { abort(); }
+  else if (a === 'pause') { if (!ses.paused) { ses.paused = true; ses.left = ses.tEnd - Date.now(); try { speechSynthesis.cancel(); } catch (e) {} } else { ses.paused = false; ses.tEnd = Date.now() + ses.left; } b.textContent = ses.paused ? 'Riprendi' : 'Pausa'; }
+  else if (a === 'skip') { ses.tEnd = Date.now(); tick(); }
+  else if (a === 'stop') { if (confirm('Chiudere l\'esercizio? Non viene salvato.')) { abort(); route(); } }
+  else if (a === 'exp') dl('scala-calma-backup-' + dk() + '.json', 'application/json', JSON.stringify(S));
+  else if (a === 'csv') dl('scala-calma-' + dk() + '.csv', 'text/csv', csv());
+  else if (a === 'share') { const t = summary(); if (navigator.share) navigator.share({ text: t }).catch(() => {}); else { try { navigator.clipboard.writeText(t); toast('Riepilogo copiato'); } catch (x) { toast(t); } } }
+  else if (a === 'wa') { b.href = 'https://wa.me/?text=' + encodeURIComponent(summary()); }
+  else if (a === 'ics') { const t = $('#remt'); if (t && t.value) S.rem = t.value; save(); dl('scala-calma-promemoria.ics', 'text/calendar', ics()); }
+  else if (a === 'reset') { if (confirm('Cancellare tutti i dati?')) { S = JSON.parse(JSON.stringify(DEF)); save(); route(); } }
+});
+app.addEventListener('change', e => {
+  if (e.target.id === 'imp' && e.target.files[0]) {
+    const r = new FileReader();
+    r.onload = () => { try { const o = JSON.parse(r.result); if (!o || !Array.isArray(o.sit) || !Array.isArray(o.sessions)) throw 0; S = Object.assign({}, DEF, o); save(); toast('Backup ripristinato'); location.hash = '#/scala'; route(); } catch (x) { toast('File non valido'); } };
+    r.readAsText(e.target.files[0]);
+  } else if (e.target.id === 'remt') { S.rem = e.target.value || S.rem; save(); }
+});
+route();
+})();
+</script>
+</body>
+</html>
