@@ -57,7 +57,7 @@ a.card{display:block;color:inherit;text-decoration:none}
 .rung .t{flex:1;line-height:1.3}
 .rung.done{--c:var(--sky);border-left-color:var(--sky)}
 .mv{display:flex;flex-direction:column;gap:4px}
-.mv button{border:1px solid var(--line);background:rgba(255,255,255,.1);color:var(--ink);border-radius:8px;width:34px;height:26px;font-size:.8rem;cursor:pointer}
+.mv button{border:1px solid var(--line);background:rgba(255,255,255,.1);color:var(--ink);border-radius:8px;width:44px;height:34px;font-size:1rem;cursor:pointer}
 .hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#6D28D9 0%,#0EA5E9 58%,#14B8A6 100%);border:1px solid rgba(255,255,255,.25);border-radius:24px;padding:18px;margin:12px 0;box-shadow:0 14px 40px rgba(14,165,233,.35)}
 .hero::after{content:"";position:absolute;right:-50px;top:-50px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.35),transparent 65%);pointer-events:none}
 .hero.warm{background:linear-gradient(135deg,#DB2777 0%,#F97316 62%,#FACC15 100%);box-shadow:0 14px 40px rgba(249,115,22,.35)}
@@ -268,10 +268,10 @@ view.scala = function () {
       <a class="btn sec" href="#/test">Provata in partita</a></div>
       ${rd ? '<p class="mut" style="margin-top:8px">Gli ultimi 2 esercizi sono andati bene (picco 3 o meno, fine 2 o meno). Se in partita ti senti tranquillo, segnala come superata.</p>' : '<p class="mut" style="margin-top:8px">Si considera pronta dopo 2 esercizi di fila con picco 3 o meno e agitazione finale 2 o meno.</p>'}</div>`;
   } else h += '<div class="card"><b>Scala completata 🎉</b><p class="mut">Hai superato tutte le situazioni. Aggiungine di nuove quando vuoi.</p></div>';
-  h += '<div class="row spread"><h2 style="margin:18px 0 4px">La mia scala</h2><a class="btn small sec" href="#/scelta">+ Situazioni</a></div><p class="mut" style="margin:0 0 6px">1 è la più difficile, ' + (n || 10) + ' la più morbida. Sposta con le frecce.</p>';
+  h += '<div class="row spread"><h2 style="margin:18px 0 4px">La mia scala</h2><a class="btn small sec" href="#/scelta">+ Situazioni</a></div><p class="mut" style="margin:0 0 6px">1 è la più difficile, ' + (n || 10) + ' la più morbida. Tocca il numero per scegliere la posizione, oppure usa le frecce.</p>';
   S.order.forEach((id, i) => {
     const x = byId(id), c = colorAt(i, n), isW = w && w.id === id;
-    h += `<div class="rung ${isW ? 'work' : ''}" style="--c:${c}"><div class="n">${i + 1}</div><div class="t">${esc(x.t)}${isW ? '<div class="badge" style="margin-top:4px;background:rgba(232,240,58,.2);color:#E8F03A">Lavoro qui</div>' : ''}</div>
+    h += `<div class="rung ${isW ? 'work' : ''}" style="--c:${c}"><button class="n" data-act="pos" data-id="${id}" aria-label="Cambia posizione" style="border:0;background:none;font:inherit;cursor:pointer;padding:0">${i + 1}</button><div class="t">${esc(x.t)}${isW ? '<div class="badge" style="margin-top:4px;background:rgba(232,240,58,.2);color:#E8F03A">Lavoro qui</div>' : ''}</div>
       ${isW ? '' : `<button class="btn small sec" data-act="focus" data-id="${id}">Lavora qui</button>`}
       <div class="mv"><button data-act="up" data-id="${id}" aria-label="Su">▲</button><button data-act="dn" data-id="${id}" aria-label="Giù">▼</button></div></div>`;
   });
@@ -438,7 +438,7 @@ view.altro = function () {
   <p class="mut" style="margin-top:8px">Il backup si condivide anche su WhatsApp o Drive dal menu che si apre. Per ripristinare scegli il file qui sotto.</p><input type="file" id="imp" accept=".json,application/json"></div>
   <h2>Promemoria</h2><div class="card"><div class="row"><span>Ogni giorno alle</span><input type="time" id="remt" value="${esc(S.rem)}" style="width:auto"></div><div style="margin-top:8px"><button class="btn small" data-act="ics">Aggiungi al calendario</button></div></div>
   <h2>Importante</h2><div class="card"><p class="mut">Questa app è un allenamento mentale per lo sport, non una terapia. Se una situazione ti provoca ansia forte o disagio che va oltre lo sport, parlane con uno psicologo dello sport o con il medico.</p></div>
-  <p class="mut">Versione 3 · Scala della calma, colori nuovi</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
+  <p class="mut">Versione 3b · posizione con un tocco</p><button class="btn ghost small" data-act="reset">Azzera tutti i dati</button>`);
 };
 
 // ---------- Esportazioni ----------
@@ -487,7 +487,8 @@ window.addEventListener('hashchange', () => route());
 app.addEventListener('click', e => {
   const b = e.target.closest('[data-act]'); if (!b) return; const a = b.dataset.act, id = b.dataset.id, v = b.dataset.v;
   const mv = (id, d) => { const i = S.order.indexOf(id), j = i + d; if (i < 0 || j < 0 || j >= S.order.length) return; const t = S.order[i]; S.order[i] = S.order[j]; S.order[j] = t; save(); route(); };
-  if (a === 'up') mv(id, -1); else if (a === 'dn') mv(id, 1);
+  if (a === 'pos') { const i = S.order.indexOf(id), n = S.order.length; const r = prompt('In che posizione la metti? Da 1 (la più difficile) a ' + n, String(i + 1)); const p = parseInt(r, 10); if (!isNaN(p) && p >= 1 && p <= n && p - 1 !== i) { S.order.splice(i, 1); S.order.splice(p - 1, 0, id); save(); route(); } }
+  else if (a === 'up') mv(id, -1); else if (a === 'dn') mv(id, 1);
   else if (a === 'focus') { S.focus = id; save(); toast('Lavori su questa'); route(); }
   else if (a === 'sup') { const w = working(); if (w && confirm('Segni questa situazione come superata?')) { w.st = 'done'; w.sup = Date.now(); S.focus = null; cleanOrder(); save(); toast('Superata! Passi alla successiva'); route(); } }
   else if (a === 'undo') { const x = byId(id); if (x) { if (S.order.length >= MAXL) { toast('La scala ha già 10 situazioni'); return; } x.st = 'on'; x.sup = null; S.order.push(x.id); save(); route(); } }
